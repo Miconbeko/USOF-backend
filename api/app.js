@@ -9,8 +9,8 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(logger.getFileLogger());
-app.use(logger.getConsoleLogger());
+app.use(logger.getFileLogger())
+app.use(logger.getConsoleLogger())
 
 app.use('/products', productRoutes)
 app.use('/orders', orderRoutes)

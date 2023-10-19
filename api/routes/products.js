@@ -1,4 +1,5 @@
 const express = require(`express`)
+const sequelize = require(`../database/db`)
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ router.get(`/`, (req, res) => {
     })
 })
 
-router.post(`/`, (req, res) => {
+router.post(`/`, async (req, res) => {
     const product = {
         name: req.body.name,
         price: req.body.price
