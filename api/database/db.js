@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
 const modelsDir = path.join(__dirname, `models`)
-const db = {}
 
 const config = JSON.parse(fs.readFileSync(`config.json`))
 const sequelize = new Sequelize(
@@ -21,19 +20,35 @@ fs.readdirSync(modelsDir)
     })
     .forEach(file => {
         const model = require(path.join(modelsDir, file))(sequelize, Sequelize.DataTypes);
-        db[model.name] = model;
     });
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
-async function testConnection() {
+// console.log(db)
+// console.log(sequelize.models)
+// console.log(sequelize.models.Category === db.Category)
+// console.log(typeof(sequelize.models.Category))
+// console.log(typeof(db.Category))
+//
+// db.sequelize = sequelize;
+// db.Sequelize = Sequelize;
+
+sequelize.testConnection = async () => {
     sequelize.authenticate().then(() => {
-        console.log('Database: Connection has been established successfully');
+        console.log('Database: Connection has been established successfully')
     }).catch((error) => {
-        console.error('Database: Unable to connect to the database: ', error);
+        console.error('Database: Unable to connect to the database: ', error)
     })
 }
 
-testConnection()
+sequelize.createTable = async (config) => {
+    require(`./associations`)(sequelize)
+    await sequelize.sync(config)
+}
 
-module.exports = db;
+sequelize.initDatabase = async () => {
+    await sequelize.testConnection()
+    await sequelize.createTable({ force: true })
+}
+
+sequelize.initDatabase()
+
+module.exports = sequelize;
