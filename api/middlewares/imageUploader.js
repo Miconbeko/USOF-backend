@@ -7,7 +7,7 @@ const ServerError = require(`../errorHandlers/ServerError`)
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const id = req.fileUuid = uuid()
-        const uploadPath  = req.uploadPath = `./uploads/${id.charAt(0)}/${id.charAt(1)}`
+        const uploadPath  = req.uploadPath = path.join('./uploads/', id.charAt(0), id.charAt(1))
 
         if (!fs.existsSync(uploadPath))
             fs.mkdirSync(uploadPath, { recursive: true })

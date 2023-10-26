@@ -1,6 +1,6 @@
 const express = require(`express`)
 const sequelize = require(`../database/db`)
-const upload = require(`../middlewares/imageParser`)
+const upload = require(`../middlewares/imageUploader`)
 const validationErrorHandler = require(`../errorHandlers/validationErrorHandler`)
 
 
@@ -11,7 +11,8 @@ router.post(`/register`, upload.singleWithHandler(`avatar`), (req, res, next) =>
     models.User.create({
         login: req.body.login,
         hashedPassword: req.body.password,
-        email: req.body.email
+        email: req.body.email,
+        avatar: req.filePath
     })
     .then((user) => {
         res.status(200).json({
