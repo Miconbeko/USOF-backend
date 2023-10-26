@@ -22,15 +22,6 @@ fs.readdirSync(modelsDir)
         const model = require(path.join(modelsDir, file))(sequelize, Sequelize.DataTypes);
     });
 
-// console.log(db)
-// console.log(sequelize.models)
-// console.log(sequelize.models.Category === db.Category)
-// console.log(typeof(sequelize.models.Category))
-// console.log(typeof(db.Category))
-//
-// db.sequelize = sequelize;
-// db.Sequelize = Sequelize;
-
 sequelize.testConnection = async () => {
     sequelize.authenticate().then(() => {
         console.log('Database: Connection has been established successfully')
@@ -50,5 +41,6 @@ sequelize.initDatabase = async () => {
 }
 
 sequelize.initDatabase()
+sequelize.Sequelize = Sequelize
 
 module.exports = sequelize;

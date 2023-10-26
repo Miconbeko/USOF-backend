@@ -1,41 +1,51 @@
 module.exports = (sequelize, DataTypes) => {
     const User = sequelize.define("User", {
-        login:{
+        login: {
             type: DataTypes.STRING(40),
-            primaryKey: true,
+            unique: true,
+            allowNull: false,
             validate: {
-                len:[5, 40]
+                len:[5, 40],
+                isAlphanumeric: true,
+                notEmpty: true,
             }
         },
-        hashedPassword:{
+        hashedPassword: {
             type: DataTypes.STRING,
             allowNull: false,
             // set(psw) {  Hash here
             //
             // }
         },
-        fullName:{
+        fullName: {
             type: DataTypes.STRING,
-            defaultValue: "John Doe"
+            defaultValue: "John Doe",
+            validate: {
+                len: [0, 100]
+            }
         },
-        email:{
+        email: {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true,
             validate: {
-                isEmail: true
+                isEmail: true,
+                len: [0, 255]
             }
         },
-        avatar:{
+        avatar: {
             type: DataTypes.STRING,
+            allowNull: false,
             defaultValue: `./resources/avatars/default.jpg`
         },
-        rating:{
+        rating: {
             type: DataTypes.BIGINT,
+            allowNull: false,
             defaultValue: 0
         },
-        role:{
+        role: {
             type: DataTypes.ENUM(`admin`, `user`),
+            allowNull: false,
             defaultValue: "user"
         }
     })
