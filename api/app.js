@@ -1,7 +1,7 @@
 const express = require(`express`)
 const cors = require(`cors`)
 
-const logger = require(`./loggers/morganMiddleware`)
+const logger = require(`./middlewares/logger`)
 const globalErrorHandler = require(`./errorHandlers/globalErrorHandler`)
 const routeErrorHandler = require(`./errorHandlers/routeErrorHandler`)
 
