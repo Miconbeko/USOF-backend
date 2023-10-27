@@ -10,7 +10,7 @@ const router = express.Router();
 router.post(`/register`, upload.singleWithHandler(`avatar`), (req, res, next) => {
     models.User.create({
         login: req.body.login,
-        hashedPassword: req.body.password,
+        password: req.body.password,
         email: req.body.email,
         avatar: req.filePath
     })
