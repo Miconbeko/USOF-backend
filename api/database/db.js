@@ -3,14 +3,13 @@ const path = require('path')
 const Sequelize = require('sequelize')
 const modelsDir = path.join(__dirname, `models`)
 
-const config = JSON.parse(fs.readFileSync(`config.json`))
 const sequelize = new Sequelize(
-    config.database,
-    config.user,
-    config.password,
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASS,
     {
-        host: config.host,
-        dialect: `mysql`
+        host: process.env.DB_HOST,
+        dialect: process.env.DIALECT
     }
 )
 
