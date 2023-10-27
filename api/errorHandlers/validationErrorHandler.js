@@ -1,6 +1,7 @@
 const ServerError = require(`./ServerError`)
 
 module.exports = (exception) => {
+    console.log(exception)
     const errorsArr = exception.errors
     const res = new ServerError(`Validation error`, 400);
 
