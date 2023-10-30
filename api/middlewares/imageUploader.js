@@ -2,7 +2,7 @@ const multer = require(`multer`)
 const { v4: uuid } = require(`uuid`)
 const fs = require(`fs`)
 const path = require(`path`)
-const ServerError = require(`../errorHandlers/ServerError`)
+const ServerError = require(`../errors/ServerError`)
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {

@@ -1,6 +1,6 @@
 const { validationResult } = require(`express-validator`)
-const ServerError = require(`./ServerError`)
-const upload = require(`../middlewares/imageUploader`)
+const ServerError = require(`../ServerError`)
+const upload = require(`../../middlewares/imageUploader`)
 
 module.exports = (req, res, next) => {
     const result = validationResult(req)

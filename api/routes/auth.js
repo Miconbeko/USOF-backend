@@ -6,7 +6,7 @@ const AuthController = require(`../controllers/AuthController`)
 const { getUserByLogin } = require(`../middlewares/getters`)
 
 const { registerValidator, loginValidator } = require(`../validators/validators`)
-const validationErrorHandler = require(`../errorHandlers/validationErrorHandler`)
+const { validationErrorHandler } = require(`../errors/handlers`)
 
 const router = express.Router();
 

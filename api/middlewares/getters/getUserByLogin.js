@@ -1,5 +1,5 @@
 const sequelize = require(`../../database/db`)
-const ServerError = require(`../../errorHandlers/ServerError`)
+const ServerError = require(`../../errors/ServerError`)
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
