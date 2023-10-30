@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING(5),
             allowNull: false
         },
-        isVerified: {
+        verified: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
         },

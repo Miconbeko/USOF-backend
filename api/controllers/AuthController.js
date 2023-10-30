@@ -15,14 +15,14 @@ class AuthController {
             verificationCode: verificationCode
         })
             .then((user) => {
-                return res.status(200).json({
+                return res.status(201).json({
                     message: `registration complete`,
                     user: user
                 })
             })
     }
 
-    async login(req, res, next) {
+    login(req, res, next) {
         res.status(200).json(req.user)
     }
 }
