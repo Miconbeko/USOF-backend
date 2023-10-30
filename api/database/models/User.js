@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
+            validate: {
+                len:[5, 254]
+            },
             set(psw) {
                 this.setDataValue(`password`, bcrypt.hashSync(psw, parseInt(process.env.SALT)))
             }
@@ -34,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
                 isEmail: true,
                 len: [0, 255]
             }
+        },
+        verificationCode: {
+            type: DataTypes.STRING(5),
+            allowNull: false
+        },
+        isVerified: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         },
         avatar: {
             type: DataTypes.STRING,

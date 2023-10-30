@@ -2,6 +2,8 @@ const express = require(`express`)
 const cors = require(`cors`)
 
 const logger = require(`./middlewares/logger`)
+const userDeletion = require(`./utils/userDeleteSchedule`)
+
 const globalErrorHandler = require(`./errorHandlers/globalErrorHandler`)
 const routeErrorHandler = require(`./errorHandlers/routeErrorHandler`)
 
@@ -14,7 +16,7 @@ app.use(express.json())
 app.use(logger.getFileLogger())
 app.use(logger.getConsoleLogger())
 
-app.use(`/auth`, authRoutes)
+app.use(`/api/auth`, authRoutes)
 
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)

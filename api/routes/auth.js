@@ -1,30 +1,17 @@
 const express = require(`express`)
-const sequelize = require(`../database/db`)
 const upload = require(`../middlewares/imageUploader`)
+
+const AuthController = require(`../controllers/AuthController`)
+
+const { getUserByLogin } = require(`../middlewares/getters`)
+
+const { registerValidator, loginValidator } = require(`../validators/validators`)
 const validationErrorHandler = require(`../errorHandlers/validationErrorHandler`)
 
-
-const models = sequelize.models;
 const router = express.Router();
 
-router.post(`/register`, upload.singleWithHandler(`avatar`), (req, res, next) => {
-    models.User.create({
-        login: req.body.login,
-        password: req.body.password,
-        email: req.body.email,
-        avatar: req.filePath
-    })
-    .then((user) => {
-        res.status(200).json({
-            message: `registration complete`,
-            user: user
-        })
-    })
-    .catch((exception) => {
-        upload.deleteFile(req.filePath)
-        next(validationErrorHandler(exception))
-    })
-})
+router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, AuthController.register)
+router.post(`/login`, ...loginValidator, validationErrorHandler, getUserByLogin, AuthController.login);
 
 module.exports = router
 
