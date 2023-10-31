@@ -1,5 +1,5 @@
 const { body } = require(`express-validator`)
-const sequelize = require(`../database/db`)
+const sequelize = require(`../../database/db`)
 
 const emailIsExists = async (email) => {
     const user = await sequelize.models.User.findOne({
@@ -36,20 +36,24 @@ module.exports = [
         .withMessage(`Login must contains only alphabetic and digit symbols`)
         .isLength({ min: 5, max: 40 })
         .withMessage(`Login length should be more than 5 and less than 40`)
-        .custom(loginIsExists),
+        .custom(loginIsExists)
+        .escape(),
     body(`email`, `E-mail is obligatory field`)
         .exists()
         .trim()
         .isEmail()
         .isLength({ max: 255 })
         .withMessage(`E-mail max length is 255`)
-        .custom(emailIsExists),
+        .custom(emailIsExists)
+        .escape(),
     body(`password`,`Password is obligatory field`)
         .exists()
         .isLength({ min: 5, max: 255 })
-        .withMessage(`Login length should be more than 5 and less than 255`),
+        .withMessage(`Login length should be mre than 5 and less than 255`)
+        .escape(),
     body(`repeatPassword`, `Confirmed password is obligatory field`)
         .exists()
         .withMessage(`Password confirmation should be provided`)
-        .custom(equalPasswords),
+        .custom(equalPasswords)
+        .escape(),
 ];

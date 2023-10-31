@@ -1,5 +1,5 @@
 const { body } = require(`express-validator`)
-const sequelize = require(`../database/db`)
+const sequelize = require(`../../database/db`)
 
 const loginOrEmail = async (body, { req }) => {
     if (!body.email && !body.login)
@@ -11,6 +11,7 @@ module.exports = [
         .exists(),
     body()
         .custom(loginOrEmail),
-    body([`login`, `email`, `password`], `Invalid login or password`)
+    body([`login`, `email`, `password`])
         .trim()
+        .escape()
 ]
