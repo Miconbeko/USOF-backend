@@ -19,7 +19,7 @@ async function getUserByLogin(req, res, next) {
     })
 
     if (user === null)
-        next(new ServerError(`User not found`, 404))
+        next(new ServerError(`Invalid login or password`, 401))
 
     req.user = user
     next()

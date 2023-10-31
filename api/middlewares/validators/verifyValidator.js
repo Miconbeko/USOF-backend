@@ -1,4 +1,4 @@
-const ServerError = require(`../errors/ServerError`)
+const ServerError = require(`../../errors/ServerError`)
 
 module.exports = (req, res, next) => {
     if (!req.user.verified)
