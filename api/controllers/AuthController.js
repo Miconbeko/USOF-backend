@@ -33,6 +33,18 @@ class AuthController {
         })
     }
 
+    resendCode(req, res, next) {
+        const verificationCode = codeGenerator(5)
+
+        req.user.update({
+            verificationCode: verificationCode
+        })
+
+        res.status(200).json({
+            message: `Validation code is resented`
+        })
+    }
+
     login(req, res, next) {
         const token = jwt.sign({
             id: req.user.id
