@@ -4,7 +4,11 @@ const cors = require(`cors`)
 const logger = require(`./middlewares/logger`)
 const userDeletion = require(`./utils/userDeleteSchedule`)
 
-const { globalErrorHandler, routeErrorHandler } = require(`./errors/handlers`)
+const
+    {
+        globalErrorHandler,
+        routeErrorHandler
+    } = require(`./errors/handlers`)
 
 const authRoutes = require(`./routes/auth`)
 
