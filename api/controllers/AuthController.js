@@ -1,3 +1,4 @@
+const jwt = require(`jsonwebtoken`)
 const sequelize = require(`../database/db`)
 const codeGenerator = require(`../utils/codeGenerator`)
 
@@ -16,7 +17,7 @@ class AuthController {
         })
             .then((user) => {
                 return res.status(201).json({
-                    message: `registration complete`,
+                    message: `Registration complete`,
                     user: user
                 })
             })
@@ -26,11 +27,35 @@ class AuthController {
         req.user.update({
             verified: true
         })
-        res.status(200).json(req.user)
+
+        res.status(200).json({
+            message: `E-mail is verified`
+        })
     }
 
     login(req, res, next) {
-        res.status(200).json(req.user)
+        const token = jwt.sign({
+            id: req.user.id
+        }, process.env.JWT_KEY, { expiresIn: '1d' })
+
+        req.user.update({
+            token: token
+        })
+
+        res.status(200).json({
+            message: `Login successful`,
+            token: token
+        })
+    }
+
+    logout(req, res, next) {
+        req.user.update({
+            token: null
+        })
+
+        res.status(200).json({
+            message: `Logout successful`
+        })
     }
 }
 

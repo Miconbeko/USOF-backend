@@ -1,5 +1,4 @@
 const { body } = require(`express-validator`)
-const sequelize = require(`../../database/db`)
 
 const loginOrEmail = async (body, { req }) => {
     if (!body.email && !body.login)
