@@ -37,9 +37,9 @@ const router = express.Router();
 
 router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
 router.post(`/verify`, ...loginValidator, ...codeValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, checkEmailCode, AuthController.verify)
-router.patch(`/resend-code`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.resendCode)
+router.post(`/resend-code`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.resendCode)
 router.post(`/login`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login);
-router.delete(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)
+router.post(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)
 
 module.exports = router
 
