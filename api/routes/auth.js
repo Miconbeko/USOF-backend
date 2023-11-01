@@ -20,6 +20,7 @@ const
 
 const
     {
+        checkEmailOrLoginExists,
         checkVerified,
         checkEmailCode,
         checkPassword,
@@ -33,7 +34,7 @@ const
 
 const router = express.Router();
 
-router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, AuthController.register)
+router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
 router.post(`/verify`, ...loginValidator, ...codeValidator, validationErrorHandler, getUserByLogin, checkPassword, checkEmailCode, AuthController.verify)
 router.post(`/login`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login);
 router.delete(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)

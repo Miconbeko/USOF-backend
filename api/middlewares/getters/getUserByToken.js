@@ -1,7 +1,6 @@
 const sequelize = require(`../../database/db`)
 const ServerError = require(`../../errors/ServerError`)
 
-const Op = sequelize.Sequelize.Op
 const models = sequelize.models
 
 module.exports = async (req, res, next) => {
