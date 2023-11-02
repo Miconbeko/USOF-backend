@@ -95,6 +95,16 @@ module.exports = (sequelize) => {
         })
     }
 
+    function tokenHasUser() {
+        models.User.hasMany(models.Token, {
+            foreignKey: `userId`
+        })
+        models.Token.belongsTo(models.User, {
+            foreignKey: `userId`,
+            as: `user`
+        })
+    }
+
     commentHasAuthor()
     postHasAuthor()
     userHasFavouritePosts()
@@ -103,4 +113,5 @@ module.exports = (sequelize) => {
     postHasMarks()
     commentHasMarks()
     initMarkPolimorfic()
+    tokenHasUser()
 }
