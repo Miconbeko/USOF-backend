@@ -1,30 +1,34 @@
 const jwt = require(`jsonwebtoken`)
+const { v4: uuid } = require(`uuid`)
 const sequelize = require(`../database/db`)
 const codeGenerator = require(`../utils/codeGenerator`)
 
 const models = sequelize.models;
 
 class AuthController {
-    register(req, res, next) {  // TODO: Maybe create middleware for this
-        const verificationCode = codeGenerator(5)
-
-        models.User.create({
+    async register(req, res, next) {  // TODO: Maybe create middleware for this
+        const user = await models.User.create({
             login: req.body.login,
             password: req.body.password,
             email: req.body.email,
             avatar: req.filePath,
-            verificationCode: verificationCode
         })
-            .then((user) => {
-                return res.status(201).json({
-                    message: `Registration complete`,
-                    user: user
-                })
-            })
+
+        const token = await models.Token.create({
+            type: `verify`
+        })
+        token.setUser(user)
+
+        return res.status(201).json({
+            message: `Registration complete`,
+            user: user.toJSON(),
+            token: token.token
+        })
     }
 
     verify(req, res, next) {
         req.user.update({
+            verificationCode: null,
             verified: true
         })
 
@@ -33,7 +37,7 @@ class AuthController {
         })
     }
 
-    resendCode(req, res, next) {
+    sendCode(req, res, next) {
         const verificationCode = codeGenerator(5)
 
         req.user.update({
@@ -41,17 +45,22 @@ class AuthController {
         })
 
         res.status(200).json({
-            message: `Validation code is resented`
+            message: `Validation code is send`
         })
     }
 
     login(req, res, next) {
+        const sessionId = uuid()
         const token = jwt.sign({
-            id: req.user.id
-        }, process.env.JWT_KEY, { expiresIn: '1d' })
+            id: req.user.id,
+            type: `session`
+        }, process.env.JWT_KEY, {
+            expiresIn: '1d',
+            jwtid: sessionId
+        })
 
         req.user.update({
-            token: token
+            sessionId: sessionId
         })
 
         res.status(200).json({
@@ -62,7 +71,7 @@ class AuthController {
 
     logout(req, res, next) {
         req.user.update({
-            token: null
+            sessionId: null
         })
 
         res.status(200).json({

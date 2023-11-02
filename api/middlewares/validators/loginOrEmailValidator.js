@@ -6,11 +6,9 @@ const loginOrEmail = async (body, { req }) => {
 }
 
 module.exports = [
-    body(`password`, `Password is obligatory field`)
-        .exists(),
     body()
         .custom(loginOrEmail),
-    body([`login`, `email`, `password`])
+    body([`login`, `email`])
         .trim()
         .escape()
 ]

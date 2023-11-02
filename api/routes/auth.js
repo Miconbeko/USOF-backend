@@ -12,8 +12,10 @@ const
 
 const
     {
+        passwordValidator,
+        loginOrEmailValidator,
         registerValidator,
-        loginValidator,
+        loginInValidator,
         codeValidator,
         tokenValidator
     } = require(`../middlewares/validators`)
@@ -33,13 +35,15 @@ const
         validationErrorHandler
     } = require(`../errors/handlers`)
 
-const router = express.Router();
+const router = express.Router()
 
 router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
-router.post(`/verify`, ...loginValidator, ...codeValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, checkEmailCode, AuthController.verify)
-router.post(`/resend-code`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.resendCode)
-router.post(`/login`, ...loginValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login);
+router.post(`/verify`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByLogin, checkToken, checkNotVerified, checkEmailCode, AuthController.verify)
+router.post(`/resend-code`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendCode)
+router.post(`/login`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
 router.post(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)
+router.post(`/password-reset`, ...loginOrEmailValidator, validationErrorHandler, getUserByLogin, checkVerified, AuthController.sendCode)
+router.post(`/password-reset/`)
 
 module.exports = router
 

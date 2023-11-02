@@ -38,16 +38,9 @@ module.exports = (sequelize, DataTypes) => {
                 len: [0, 255]
             }
         },
-        verificationCode: {
-            type: DataTypes.STRING(5),
-            allowNull: false
-        },
         verified: {
             type: DataTypes.BOOLEAN,
             defaultValue: false
-        },
-        token: {
-            type: DataTypes.STRING
         },
         avatar: {
             type: DataTypes.STRING,
