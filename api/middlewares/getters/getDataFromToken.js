@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
         req.token = jwt.verify(req.body.token, process.env.JWT_KEY)
     }
     catch (err) {
-        next(new ServerError(`Invalid or expired token`, 401))
+        return next(new ServerError(`Invalid or expired token`, 401))
     }
     next()
 }

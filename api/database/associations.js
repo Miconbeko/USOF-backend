@@ -101,7 +101,7 @@ module.exports = (sequelize) => {
         })
         models.Token.belongsTo(models.User, {
             foreignKey: `userId`,
-            as: `user`
+            as: `owner`
         })
     }
 
