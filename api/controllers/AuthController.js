@@ -17,7 +17,7 @@ class AuthController {
         const token = await models.Token.create({
             type: `verify`
         })
-        token.setUser(user)
+        token.setOwner(user)
 
         return res.status(201).json({
             message: `Registration complete`,
@@ -28,9 +28,9 @@ class AuthController {
 
     verify(req, res, next) {
         req.user.update({
-            verificationCode: null,
             verified: true
         })
+        req.user.token.destroy()
 
         res.status(200).json({
             message: `E-mail is verified`

@@ -19,10 +19,10 @@ module.exports = async (req, res, next) => {
     })
 
     if (user?.email === req.body.email)
-        next(new ServerError(`E-mail already in use`, 409))
+        return next(new ServerError(`E-mail already in use`, 409))
 
     if (user?.login === req.body.login)
-        next(new ServerError(`Login already in use`, 409))
+        return next(new ServerError(`Login already in use`, 409))
 
     next()
 }

@@ -7,5 +7,6 @@ module.exports = (field, fieldName)=> {
     return body(field, `${fieldName} is obligatory field`)
         .exists()
         .trim()
+        .notEmpty()
         .escape()
 }

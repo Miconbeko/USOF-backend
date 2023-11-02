@@ -16,8 +16,8 @@ const
         loginOrEmailValidator,
         registerValidator,
         loginInValidator,
-        codeValidator,
-        tokenValidator
+        tokenValidator,
+        queryTokenValidator
     } = require(`../middlewares/validators`)
 
 const
@@ -25,7 +25,6 @@ const
         checkEmailOrLoginExists,
         checkVerified,
         checkNotVerified,
-        checkEmailCode,
         checkPassword,
         checkToken
     } = require(`../middlewares/checkers`)
@@ -38,10 +37,10 @@ const
 const router = express.Router()
 
 router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
-router.post(`/verify`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByLogin, checkToken, checkNotVerified, checkEmailCode, AuthController.verify)
+router.post(`/verify/:token`, ...queryTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, checkNotVerified, AuthController.verify)
 router.post(`/resend-code`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendCode)
 router.post(`/login`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
-router.post(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)
+router.post(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, AuthController.logout)
 router.post(`/password-reset`, ...loginOrEmailValidator, validationErrorHandler, getUserByLogin, checkVerified, AuthController.sendCode)
 router.post(`/password-reset/`)
 

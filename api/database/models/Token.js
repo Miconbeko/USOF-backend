@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('verify', 'pswReset'),
             allowNull: false
         },
+        uuid: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4
+        },
         expiredAt: {
             type: DataTypes.DATE,
             defaultValue: getOffsetDate({ days: 1 })
@@ -23,7 +27,8 @@ module.exports = (sequelize, DataTypes) => {
                     tokenId: this.id,
                     redirectUrl: this.redirectUrl
                 }, process.env.JWT_KEY, {
-                    expiresIn: `${this.expiredAt.getTime() - new Date().getTime()}ms`,    // TODO: test this
+                    expiresIn: `${this.expiredAt.getTime() - new Date().getTime()}ms`,
+                    jwtid: this.uuid
                 })
             }
         }

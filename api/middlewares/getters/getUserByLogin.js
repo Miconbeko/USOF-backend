@@ -19,7 +19,7 @@ module.exports = async (req, res, next) => {
     })
 
     if (user === null)
-        next(new ServerError(`Invalid login or password`, 401))
+        return next(new ServerError(`Invalid login or password`, 401))
 
     req.user = user
     next()

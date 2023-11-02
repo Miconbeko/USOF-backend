@@ -4,15 +4,17 @@ const ServerError = require(`../../errors/ServerError`)
 const models = sequelize.models
 
 module.exports = async (req, res, next) => {
-    const user = await models.User.findOne({
+    const token = await models.Token.findOne({
         where: {
-            id: req.token.id
+            id: req.token.tokenId
         }
     })
+    const user = await token?.getOwner()
 
-    if (user === null)
-        next(new ServerError(`Invalid or expired token`, 401))
+    if (!token || !user)
+        return next(new ServerError(`Invalid or expired token`, 401))
 
+    user.token = token
     req.user = user
     next()
 }
