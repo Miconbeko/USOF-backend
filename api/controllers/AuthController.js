@@ -3,10 +3,21 @@ const { v4: uuid } = require(`uuid`)
 const sequelize = require(`../database/db`)
 const codeGenerator = require(`../utils/codeGenerator`)
 
+const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
 
 class AuthController {
-    async register(req, res, next) {  // TODO: Maybe create middleware for this
+    createToken = async (type, redirectUrl, owner) => {
+        const token = await models.Token.create({
+            type,
+            redirectUrl
+        })
+        token.setOwner(owner)
+
+        return token
+    }
+
+    register = async (req, res, next) => {  // TODO: Maybe create middleware for this
         const user = await models.User.create({
             login: req.body.login,
             password: req.body.password,
@@ -14,11 +25,7 @@ class AuthController {
             avatar: req.filePath,
         })
 
-        const token = await models.Token.create({
-            type: `verify`,
-            redirectUrl: req.body.redirectUrl
-        })
-        token.setOwner(user)
+        const token = await this.createToken(`verify`, req.body.redirectUrl, user)
 
         // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
 
@@ -29,41 +36,59 @@ class AuthController {
         })
     }
 
-    verifyEmail(req, res, next) {
+    verifyEmail = async (req, res, next) => {
         req.user.update({
             verified: true
         })
-        req.user.token.destroy()
+        models.Token.destroy({
+            where: {
+                userId: req.user.id
+            }
+        })
 
         res.status(200).json({
             message: `E-mail is verified`
         })
     }
 
-    sendCode(req, res, next) {
-        const verificationCode = codeGenerator(5)
-
-        req.user.update({
-            verificationCode: verificationCode
-        })
-
-        res.status(200).json({
-            message: `Validation code is send`
-        })
-    }
-
-    async login(req, res, next) {
+    sendVerifyToken = async (req, res, next) => {
         await models.Token.destroy({
             where: {
-                type: `session`,
-                userId: req.user.id
+                userId: req.user.id,
+                type: `verify`
             }
         })
 
-        const token = await models.Token.create({
-            type: `session`
+        const token = await this.createToken(`verify`, req.body.redirectUrl, req.user)
+
+        // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
+
+        return res.status(200).json({
+            message: `Validation link is send`,
+            token: token.token
         })
-        token.setOwner(req.user)
+    }
+
+    sendPswResetToken = async (req, res, next) => {
+        await models.Token.destroy({
+            where: {
+                userId: req.user.id,
+                type: `pswReset`
+            }
+        })
+
+        const token = await this.createToken(`pswReset`, req.body.redirectUrl, req.user)
+
+        // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
+
+        return res.status(200).json({
+            message: `Password reset link is send`,
+            token: token.token
+        })
+    }
+
+    login = async (req, res, next) => {
+        const token = await this.createToken(`session`, null, req.user)
 
         res.status(200).json({
             message: `Login successful`,
@@ -71,16 +96,26 @@ class AuthController {
         })
     }
 
-    async logout(req, res, next) {
-        await models.Token.destroy({
+    logout = async (req, res, next) => {
+        req.user.token.destroy()
+
+        res.status(200).json({
+            message: `Logout successful`
+        })
+    }
+
+    changePassword = async (req, res, next) => {
+        req.user.update({
+            password: req.body.password
+        })
+        models.Token.destroy({
             where: {
-                type: `session`,
                 userId: req.user.id
             }
         })
 
-        res.status(200).json({
-            message: `Logout successful`
+        res.status(202).json({
+            message: "Password changed"
         })
     }
 }
