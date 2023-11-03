@@ -1,19 +1,21 @@
 const createObligatoryValidator = require(`./validators/createObligatoryValidator`)
 
-const registerValidator = require(`./validators/registerValidator`)
+const passwordRegisterValidator = require(`./validators/passwordRegisterValidator`)
+const loginRegisterValidator = require(`./validators/loginRegisterValidator`)
+const emailRegisterValidator = require(`./validators/emailRegisterValidator`)
 const loginOrEmailValidator = require(`./validators/loginOrEmailValidator`)
 const queryTokenValidator = require(`./validators/queryTokenValidator`)
 
 const passwordValidator = createObligatoryValidator(`password`)
-const codeValidator = createObligatoryValidator(`code`, `E-mail verification code`)
 const tokenValidator = createObligatoryValidator(`token`)
 
 module.exports = {
-    registerValidator,
-    passwordValidator: [passwordValidator],
-    loginOrEmailValidator: [loginOrEmailValidator],
+    passwordRegisterValidator,
+    loginRegisterValidator,
+    emailRegisterValidator,
+    registerValidator: [passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator],
+    loginOrEmailValidator,
     loginInValidator: [loginOrEmailValidator, passwordValidator],
-    codeValidator: [codeValidator],
     tokenValidator: [tokenValidator],
     queryTokenValidator
 }

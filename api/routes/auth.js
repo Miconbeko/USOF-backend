@@ -12,9 +12,11 @@ const
 
 const
     {
-        passwordValidator,
-        loginOrEmailValidator,
+        passwordRegisterValidator,
+        loginRegisterValidator,
+        emailRegisterValidator,
         registerValidator,
+        loginOrEmailValidator,
         loginInValidator,
         tokenValidator,
         queryTokenValidator
@@ -26,7 +28,10 @@ const
         checkVerified,
         checkNotVerified,
         checkPassword,
-        checkToken
+        checkToken,
+        checkTokenVerify,
+        checkTokenPswReset,
+        checkTokenSession
     } = require(`../middlewares/checkers`)
 
 const
@@ -37,12 +42,12 @@ const
 const router = express.Router()
 
 router.post(`/register`, upload.singleWithHandler(`avatar`), ...registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
-router.post(`/verify/:token`, ...queryTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, checkNotVerified, AuthController.verifyEmail)
-router.post(`/resend-code`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendCode)
-router.post(`/login`, ...loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
-router.post(`/logout`, ...tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkToken, AuthController.logout)
-router.post(`/password-reset`, ...loginOrEmailValidator, validationErrorHandler, getUserByLogin, checkVerified, AuthController.sendCode)
-router.post(`/password-reset/`)
+router.post(`/verify/:token`, queryTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenVerify, checkNotVerified, AuthController.verifyEmail)
+router.post(`/verify-resend`, loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendVerifyToken)
+router.post(`/login`, loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
+router.post(`/logout`, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, AuthController.logout)
+router.post(`/password-reset`, loginOrEmailValidator, validationErrorHandler, getUserByLogin, checkVerified, AuthController.sendPswResetToken)
+router.patch(`/password-reset/:token`, queryTokenValidator, passwordRegisterValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenPswReset, AuthController.changePassword)
 
 module.exports = router
 
