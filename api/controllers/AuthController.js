@@ -15,9 +15,12 @@ class AuthController {
         })
 
         const token = await models.Token.create({
-            type: `verify`
+            type: `verify`,
+            redirectUrl: req.body.redirectUrl
         })
         token.setOwner(user)
+
+        // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
 
         return res.status(201).json({
             message: `Registration complete`,
@@ -26,7 +29,7 @@ class AuthController {
         })
     }
 
-    verify(req, res, next) {
+    verifyEmail(req, res, next) {
         req.user.update({
             verified: true
         })
@@ -49,29 +52,31 @@ class AuthController {
         })
     }
 
-    login(req, res, next) {
-        const sessionId = uuid()
-        const token = jwt.sign({
-            id: req.user.id,
-            type: `session`
-        }, process.env.JWT_KEY, {
-            expiresIn: '1d',
-            jwtid: sessionId
+    async login(req, res, next) {
+        await models.Token.destroy({
+            where: {
+                type: `session`,
+                userId: req.user.id
+            }
         })
 
-        req.user.update({
-            sessionId: sessionId
+        const token = await models.Token.create({
+            type: `session`
         })
+        token.setOwner(req.user)
 
         res.status(200).json({
             message: `Login successful`,
-            token: token
+            token: token.token
         })
     }
 
-    logout(req, res, next) {
-        req.user.update({
-            sessionId: null
+    async logout(req, res, next) {
+        await models.Token.destroy({
+            where: {
+                type: `session`,
+                userId: req.user.id
+            }
         })
 
         res.status(200).json({

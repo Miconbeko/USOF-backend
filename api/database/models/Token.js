@@ -1,12 +1,13 @@
 const jwt = require(`jsonwebtoken`)
 const { v4: uuid } = require(`uuid`)
 const getOffsetDate = require(`../../utils/getOffsetDate`)
-const bcrypt = require(`bcrypt`)
 
 module.exports = (sequelize, DataTypes) => {
+    const Op = sequelize.Sequelize.Op
+
     const Token = sequelize.define(`Token`, {
         type: {
-            type: DataTypes.ENUM('verify', 'pswReset'),
+            type: DataTypes.ENUM(`verify`, `pswReset`, `session`),
             allowNull: false
         },
         uuid: {
@@ -30,6 +31,31 @@ module.exports = (sequelize, DataTypes) => {
                     expiresIn: `${this.expiredAt.getTime() - new Date().getTime()}ms`,
                     jwtid: this.uuid
                 })
+            }
+        }
+    }, {
+        scopes: {
+            verifies: {
+                where: {
+                    type: `verify`
+                }
+            },
+            passwordResets: {
+                where: {
+                    type: `pswReset`
+                }
+            },
+            sessions: {
+                where: {
+                    type: `session`
+                }
+            },
+            expired: {
+                where: {
+                    expiredAt: {
+                        [Op.lte]: new Date()
+                    }
+                }
             }
         }
     })
