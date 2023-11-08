@@ -1,8 +1,8 @@
-module.exports = (error, req, res, next) => {
-    res.status(error.code || 500)
+module.exports = (err, req, res, next) => {
+    res.status(err.code || 500)
     res.json({
-        message: error.message,
-        errors: error.errors,
+        message: err.message,
+        errors: err.errors,
         method: req.method,
         url: req.url,
         // body: req.body

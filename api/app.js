@@ -7,7 +7,8 @@ const userDeletion = require(`./utils/userDeleteSchedule`)
 const
     {
         globalErrorHandler,
-        routeErrorHandler
+        routeErrorHandler,
+        transactionErrorHandler
     } = require(`./errors/handlers`)
 
 const authRoutes = require(`./routes/auth`)
@@ -19,6 +20,7 @@ app.use(express.json())
 app.use(logger.getFileLogger())
 app.use(logger.getConsoleLogger())
 
+app.use(express.static(`uploads`))
 app.use(`/api/auth`, authRoutes)
 
 app.use(routeErrorHandler)

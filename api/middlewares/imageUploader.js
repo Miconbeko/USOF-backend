@@ -4,6 +4,8 @@ const fs = require(`fs`)
 const path = require(`path`)
 const ServerError = require(`../errors/ServerError`)
 
+const imagemin = require(`imagemin`)
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const id = req.fileUuid = uuid()
