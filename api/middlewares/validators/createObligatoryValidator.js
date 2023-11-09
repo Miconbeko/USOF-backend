@@ -1,6 +1,6 @@
-const { body } = require(`express-validator`)
+import { body } from "express-validator"
 
-module.exports = (field, fieldName)=> {
+export default (field, fieldName) => {
     if (!fieldName)
         fieldName = field.slice(0, 1).toUpperCase() + field.slice(1).toLowerCase()
 

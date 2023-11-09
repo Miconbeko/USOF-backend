@@ -1,6 +1,6 @@
-const { body } = require(`express-validator`)
+import { body } from "express-validator"
 
-module.exports = [
+export default [
     body(`email`, `E-mail is obligatory field`)
         .exists()
         .trim()

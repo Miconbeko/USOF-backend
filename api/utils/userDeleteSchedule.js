@@ -1,5 +1,5 @@
-const schedule = require(`node-schedule`)
-const sequelize = require(`../database/db`)
+import schedule from "node-schedule"
+import sequelize from "../database/db.js";
 
 const Op = sequelize.Sequelize.Op
 
@@ -24,4 +24,4 @@ const job = schedule.scheduleJob(rule, async () => {
     console.log("deleting") // TODO: need to log this
 })
 
-module.exports = job
+export default job

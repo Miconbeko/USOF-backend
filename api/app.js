@@ -1,17 +1,11 @@
-const express = require(`express`)
-const cors = require(`cors`)
+import express from "express"
+import cors from "cors"
+import logger from "./middlewares/logger.js";
+import "./utils/userDeleteSchedule.js";
 
-const logger = require(`./middlewares/logger`)
-const userDeletion = require(`./utils/userDeleteSchedule`)
+import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js";
 
-const
-    {
-        globalErrorHandler,
-        routeErrorHandler,
-        transactionErrorHandler
-    } = require(`./errors/handlers`)
-
-const authRoutes = require(`./routes/auth`)
+import authRoutes from "./routes/auth.js";
 
 const app = express()
 
@@ -26,4 +20,4 @@ app.use(`/api/auth`, authRoutes)
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)
 
-module.exports = app
+export default app

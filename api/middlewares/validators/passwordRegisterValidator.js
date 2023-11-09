@@ -1,11 +1,11 @@
-const { body } = require(`express-validator`)
+import { body } from "express-validator"
 
 const equalPasswords = async (psw, { req }) => {
     if (psw !== req.body.password)
         throw new Error(`Passwords don't match`)
 }
 
-module.exports = [
+export default [
     body(`password`,`Password is obligatory field`)
         .exists()
         .isLength({ min: 5, max: 255 })

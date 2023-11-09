@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-    const Post = sequelize.define(`Post`, {
+export default async function (sequelize, DataTypes) {
+    const Post = await sequelize.define(`Post`, {
         title: {
             type: DataTypes.STRING(60),
             allowNull: false,

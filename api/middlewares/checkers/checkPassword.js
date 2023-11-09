@@ -1,7 +1,7 @@
-const ServerError = require(`../../errors/ServerError`)
-const bcrypt = require(`bcrypt`)
+import bcrypt from "bcrypt"
+import ServerError from "../../errors/ServerError.js";
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     if (!bcrypt.compareSync(req.body.password, req.user.password))
         return next(new ServerError(`Invalid login or password`, 401))
     next()

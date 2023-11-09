@@ -1,4 +1,4 @@
-module.exports = (err, req, res, next) => {
+export default (err, req, res, next) => {
     res.status(err.code || 500)
     res.json({
         message: err.message,

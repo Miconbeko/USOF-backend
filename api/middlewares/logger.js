@@ -1,5 +1,5 @@
-const logger = require(`morgan`)
-const fs = require(`fs`)
+import logger from "morgan"
+import fs from "fs";
 
 logger.getFileLogger = () => {
     if (!fs.existsSync(`./logs`))
@@ -14,4 +14,4 @@ logger.getConsoleLogger = () => {
     return logger(`dev`)
 }
 
-module.exports = logger
+export default logger

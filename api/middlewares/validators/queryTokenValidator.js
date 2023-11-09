@@ -1,10 +1,10 @@
-const { param } = require(`express-validator`)
+import { param } from "express-validator"
 
 const toBody = async (token, { req }) => {
     req.body.token = token
 }
 
-module.exports = [
+export default [
     param(`token`, `Invalid token`)
         .exists()
         .trim()

@@ -1,10 +1,10 @@
-const sequelize = require(`../../database/db`)
-const ServerError = require(`../../errors/ServerError`)
+import sequelize from "../../database/db.js";
+import ServerError from "../../errors/ServerError.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
     const user = await models.User.findOne({
         where: {
             [Op.or]: [

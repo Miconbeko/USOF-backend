@@ -1,7 +1,7 @@
-const bcrypt = require(`bcrypt`)
+import bcrypt from "bcrypt"
 
-module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define("User", {
+export default async function (sequelize, DataTypes) {
+    const User = await sequelize.define("User", {
         login: {
             type: DataTypes.STRING(40),
             unique: true,

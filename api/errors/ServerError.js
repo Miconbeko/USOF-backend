@@ -1,4 +1,4 @@
-module.exports = class ServerError extends Error {
+export default class ServerError extends Error {
     constructor(message, code) {
         super(message);
         if (typeof code === `number`)
