@@ -1,8 +1,7 @@
-const jwt = require(`jsonwebtoken`)
-const ServerError = require(`../../errors/ServerError`)
+import jwt from "jsonwebtoken"
+import ServerError from "../../errors/ServerError.js";
 
-
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
     try {
         req.token = jwt.verify(req.body.token, process.env.JWT_KEY)
     }

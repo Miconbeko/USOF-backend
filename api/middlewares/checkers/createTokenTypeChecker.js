@@ -1,7 +1,6 @@
-const jwt = require(`jsonwebtoken`)
-const ServerError = require(`../../errors/ServerError`)
+import ServerError from "../../errors/ServerError.js";
 
-module.exports = (type) => {
+export default (type) => {
     return (req, res, next) => {
         if (req.user.token.type !== type)
             return next(new ServerError(`Invalid or expired token`, 401))

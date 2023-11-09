@@ -1,11 +1,10 @@
-const jwt = require(`jsonwebtoken`)
-const { v4: uuid } = require(`uuid`)
-const getOffsetDate = require(`../../utils/getOffsetDate`)
+import jwt from "jsonwebtoken"
+import getOffsetDate from "../../utils/getOffsetDate.js";
 
-module.exports = (sequelize, DataTypes) => {
+export default async function (sequelize, DataTypes) {
     const Op = sequelize.Sequelize.Op
 
-    const Token = sequelize.define(`Token`, {
+    const Token = await sequelize.define(`Token`, {
         type: {
             type: DataTypes.ENUM(`verify`, `pswReset`, `session`),
             allowNull: false

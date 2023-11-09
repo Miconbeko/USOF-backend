@@ -1,9 +1,9 @@
-const sequelize = require(`../../database/db`)
-const ServerError = require(`../../errors/ServerError`)
+import sequelize from "../../database/db.js";
+import ServerError from "../../errors/ServerError.js";
 
 const models = sequelize.models
 
-module.exports = async (req, res, next) => {
+export default async (req, res, next) => {
     const token = await models.Token.findOne({
         where: {
             id: req.token.tokenId

@@ -1,5 +1,5 @@
-module.exports = (sequelize, DataTypes) => {
-    const Comment = sequelize.define(`Comment`, {
+export default async function (sequelize, DataTypes) {
+    const Comment = await sequelize.define(`Comment`, {
         content: {
             type: DataTypes.TEXT,
             allowNull: false,

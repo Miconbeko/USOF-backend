@@ -1,10 +1,9 @@
-const multer = require(`multer`)
-const { v4: uuid } = require(`uuid`)
-const fs = require(`fs`)
-const path = require(`path`)
-const ServerError = require(`../errors/ServerError`)
-
-const imagemin = require(`imagemin`)
+import multer from "multer"
+import { v4 as uuid } from "uuid"
+import fs from "fs";
+import path from "path";
+import imagemin from "imagemin"
+import ServerError from "../errors/ServerError.js";
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -61,4 +60,4 @@ upload.deleteFile = (filePath) => {
         fs.unlinkSync(filePath)
 }
 
-module.exports = upload
+export default upload

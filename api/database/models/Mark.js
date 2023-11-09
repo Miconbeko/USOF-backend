@@ -1,7 +1,7 @@
 const uppercaseFirst = str => `${str[0].toUpperCase()}${str.substring(1)}`
 
-module.exports = (sequelize, DataTypes) => {
-    const Mark = sequelize.define(`Mark`, {
+export default async function (sequelize, DataTypes) {
+    const Mark = await sequelize.define(`Mark`, {
         type: {
             type: DataTypes.ENUM(`like`, `dislike`),
             allowNull: false,

@@ -1,17 +1,10 @@
-const jwt = require(`jsonwebtoken`)
-const { v4: uuid } = require(`uuid`)
-const sequelize = require(`../database/db`)
+import sequelize from "../database/db.js";
+import retryError from "../errors/RetryError.js";
+
+import { transactionErrorHandler } from "../errors/handlers.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
-
-const retryError = require(`../errors/RetryError`)
-
-const
-    {
-        transactionErrorHandler
-    } = require(`../errors/handlers`)
-
 
 class AuthController {
     createToken = async (type, redirectUrl, owner, transaction) => {
@@ -202,4 +195,4 @@ class AuthController {
     }
 }
 
-module.exports = new AuthController()
+export default new AuthController()

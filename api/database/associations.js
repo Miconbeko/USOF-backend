@@ -1,4 +1,5 @@
-module.exports = (sequelize) => {
+export default function (sequelize) {
+    console.log(sequelize.models)
     const models = sequelize.models
 
     function commentHasAuthor() {

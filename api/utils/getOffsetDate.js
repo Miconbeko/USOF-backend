@@ -1,4 +1,4 @@
-module.exports = (offset) => {
+export default offset => {
     offset = {
         days: offset.days ?? 0,
         hours: offset.hours ?? 0,

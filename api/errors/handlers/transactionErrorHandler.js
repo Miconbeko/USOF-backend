@@ -1,6 +1,6 @@
-const ServerError = require(`../ServerError`)
+import ServerError from "../ServerError.js";
 
-module.exports = (err, req, res, next) => {
+export default (err, req, res, next) => {
     if (err.original.sqlState === '40001') {    // log this
         console.log(`Deadlock. Retrying...`)
         return err.retry(req, res, next)

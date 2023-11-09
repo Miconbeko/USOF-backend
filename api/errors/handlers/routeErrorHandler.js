@@ -1,5 +1,5 @@
-const ServerError = require(`../ServerError`)
+import ServerError from "../ServerError.js";
 
-module.exports = (req, res, next) => {
+export default (req, res, next) => {
     next(new ServerError("Route not found", 404))
 }

@@ -1,9 +1,3 @@
-const getUserByLogin = require(`./getters/getUserByLogin`)
-const getDataFromToken = require(`./getters/getDataFromToken`)
-const getUserByToken = require(`./getters/getUserByToken`)
-
-module.exports = {
-    getUserByLogin,
-    getDataFromToken,
-    getUserByToken
-}
+export { default as getUserByLogin } from "./getters/getUserByLogin.js"
+export { default as getDataFromToken } from "./getters/getDataFromToken.js"
+export { default as getUserByToken } from "./getters/getUserByToken.js"
