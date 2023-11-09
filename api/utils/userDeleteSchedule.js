@@ -1,5 +1,7 @@
 import schedule from "node-schedule"
 import sequelize from "../database/db.js";
+import {transactionErrorHandler} from "../errors/handlers.js";
+import retryError from "../errors/RetryError.js";
 
 const Op = sequelize.Sequelize.Op
 
@@ -8,20 +10,41 @@ rule.hour = 12
 rule.minute = 0
 rule.second = 0
 
-const job = schedule.scheduleJob(rule, async () => {
+const clearOldRecords = async () => {
     const dayBefore = new Date()
     dayBefore.setDate(dayBefore.getDate() - 1)
 
-    await sequelize.models.User.destroy({
-        where: {
-            isVerified: false,
-            createdAt: {
-                [Op.lte]: dayBefore
-            }
-        }
-    })
+    sequelize.inTransaction(async transaction => {
+        await Promise.all([
+            sequelize.models.User.destroy({
+                where: {
+                    verified: false,
+                    createdAt: {
+                        [Op.lte]: dayBefore
+                    }
+                },
+                transaction
+            }),
 
-    console.log("deleting") // TODO: need to log this
-})
+            sequelize.models.Token.destroy({
+                where: {
+                    createdAt: {
+                        [Op.lte]: dayBefore
+                    }
+                },
+                transaction
+            })
+        ])
+    })
+        .then(() => {
+            console.log("Deletion job executed") // TODO: need to log this
+        })
+        .catch(err => {
+            transactionErrorHandler(retryError(clearOldRecords, err), null, null, null)
+        })
+
+}
+
+const job = schedule.scheduleJob(rule, clearOldRecords)
 
 export default job

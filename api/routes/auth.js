@@ -1,5 +1,5 @@
 import express from "express"
-import upload from "../middlewares/imageUploader.js";
+import { default as upload, compressImage } from "../middlewares/imageUploader.js";
 import AuthController from "../controllers/AuthController.js";
 
 import { getUserByLogin, getDataFromToken, getUserByToken } from "../middlewares/getters.js";
@@ -17,7 +17,7 @@ import { validationErrorHandler } from "../errors/handlers.js"
 
 const router = express.Router()
 
-router.post(`/register`, upload.singleWithHandler(`avatar`), registerValidator, validationErrorHandler, checkEmailOrLoginExists, AuthController.register)
+router.post(`/register`, upload.singleWithHandler(`avatar`), registerValidator, validationErrorHandler, checkEmailOrLoginExists, compressImage, AuthController.register)
 router.patch(`/verify/:token`, queryTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenVerify, checkNotVerified, AuthController.verifyEmail)
 router.post(`/verify-resend`, loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendVerifyToken)
 router.post(`/login`, loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
