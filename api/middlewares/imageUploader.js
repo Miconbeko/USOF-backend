@@ -2,13 +2,15 @@ import multer from "multer"
 import { v4 as uuid } from "uuid"
 import fs from "fs";
 import path from "path";
-import imagemin from "imagemin"
 import ServerError from "../errors/ServerError.js";
+
+import imagemin from "imagemin"
+import imageminWebp from 'imagemin-webp';
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const id = req.fileUuid = uuid()
-        const uploadPath  = req.uploadPath = path.join('./uploads/', id.charAt(0), id.charAt(1))
+        const uploadPath  = req.uploadPath = path.join('./uploads/uncompressed/', id.charAt(0), id.charAt(1))
 
         if (!fs.existsSync(uploadPath))
             fs.mkdirSync(uploadPath, { recursive: true })
@@ -47,12 +49,26 @@ const upload = multer({
 
 upload.singleWithHandler = (field) => {
     return (req, res, next) => {
-        upload.single(field)(req, res, (err) => {
+        upload.single(field)(req, res, async (err) => {
             if (err)
-                next(new ServerError(err.message, 400))
-            next()
+                return next(new ServerError(err.message, 400))
+
+            return next()
         })
     }
+}
+
+upload.compressImage = async (oldPath, newPath) => {
+    const file = imagemin([oldPath], {
+        destination: newPath,
+        plugins: [
+            imageminWebp()
+        ]
+    })
+        .then(() => {
+            upload.deleteFile(oldPath)
+        })
+
 }
 
 upload.deleteFile = (filePath) => {
@@ -60,4 +76,22 @@ upload.deleteFile = (filePath) => {
         fs.unlinkSync(filePath)
 }
 
-export default upload
+const compressImage = (req, res, next) => {
+    try {
+        if (req.filePath) {
+            const newUploadPath = req.uploadPath.replace(`uncompressed`, 'compressed')
+            const newFilePath = req.filePath.replace(`uncompressed`, 'compressed')
+
+            upload.compressImage(req.filePath, newUploadPath)
+                .then(() => {
+                    req.uploadPath = newUploadPath
+                    req.filePath = newFilePath
+                })
+        }
+    } catch (err) {
+        console.log('Compress failed') // TODO: log this
+    }
+    next()
+}
+
+export { upload as default, compressImage }
