@@ -3,6 +3,7 @@ import ServerError from "../../errors/ServerError.js";
 
 export default async (req, res, next) => {
     try {
+        console.log(req.body)
         req.token = jwt.verify(req.body.token, process.env.JWT_KEY)
     }
     catch (err) {

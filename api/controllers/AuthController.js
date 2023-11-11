@@ -45,6 +45,10 @@ class AuthController {
         // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
     }
 
+    adminRegister = async (req, res, next) => {
+
+    }
+
     verifyEmail = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
             await Promise.all([

@@ -72,7 +72,7 @@ upload.compressImage = async (oldPath, newPath) => {
 }
 
 upload.deleteFile = (filePath) => {
-    if (filePath !== undefined)
+    if (fs.existsSync(filePath))
         fs.unlinkSync(filePath)
 }
 

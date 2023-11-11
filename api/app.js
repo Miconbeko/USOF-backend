@@ -1,11 +1,12 @@
 import express from "express"
 import cors from "cors"
-import logger from "./middlewares/logger.js";
-import "./utils/userDeleteSchedule.js";
+import logger from "./middlewares/logger.js"
+import "./utils/userDeleteSchedule.js"
 
-import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js";
+import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js"
 
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/auth.js"
+import usersRoutes from "./routes/users.js"
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.use(logger.getConsoleLogger())
 
 app.use(express.static(`uploads`))
 app.use(`/api/auth`, authRoutes)
+app.use(`/api/users`, usersRoutes)
 
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)
