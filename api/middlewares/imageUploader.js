@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         const id = req.fileUuid
-        const newFilename = id + path.extname(file.originalname)
+        const newFilename = id + `.webp`
 
         req.filePath = path.join(req.uploadPath, newFilename)
 
