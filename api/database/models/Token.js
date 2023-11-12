@@ -6,7 +6,7 @@ export default async function (sequelize, DataTypes) {
 
     const Token = await sequelize.define(`Token`, {
         type: {
-            type: DataTypes.ENUM(`verify`, `pswReset`, `session`),
+            type: DataTypes.ENUM(`verify`, `pswReset`, `session`, `delete`),
             allowNull: false
         },
         uuid: {

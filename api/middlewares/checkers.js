@@ -12,7 +12,9 @@ export { checkEmailOrLoginExists, checkVerified, checkNotVerified, checkPassword
 export const checkTokenTypeVerify = createTokenTypeChecker(`verify`)
 export const checkTokenTypePswReset = createTokenTypeChecker(`pswReset`)
 export const checkTokenTypeSession = createTokenTypeChecker(`session`)
+export const checkTokenTypeDelete = createTokenTypeChecker(`delete`)
 
 export const checkTokenVerify = [checkToken, checkTokenTypeVerify]
 export const checkTokenPswReset = [checkToken, checkTokenTypePswReset]
 export const checkTokenSession = [checkToken, checkTokenTypeSession]
+export const checkTokenDelete = [checkToken, checkTokenTypeDelete]

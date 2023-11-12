@@ -2,22 +2,12 @@ import sequelize from "../database/db.js";
 import retryError from "../errors/RetryError.js";
 
 import { transactionErrorHandler } from "../errors/handlers.js";
+import createToken from "../utils/createToken.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
 
 class AuthController {
-    createToken = async (type, redirectUrl, owner, transaction) => {
-        const token = await models.Token.create({
-            type,
-            redirectUrl
-        }, { transaction })
-
-        await token.setOwner(owner, { transaction })
-
-        return token
-    }
-
     register = (req, res, next) => {  // TODO: Maybe create middleware for this
         sequelize.inTransaction(async transaction => {
             const user = await models.User.create({
@@ -28,7 +18,7 @@ class AuthController {
                 avatar: req.filePath
             }, { transaction })
 
-            const token = await this.createToken(`verify`, req.body.redirectUrl, user, transaction)
+            const token = await createToken(`verify`, req.body.redirectUrl, user, transaction)
 
             return { user, token }
         })
@@ -104,7 +94,7 @@ class AuthController {
                 transaction,
             })
 
-            return await this.createToken(`verify`, req.body.redirectUrl, req.user, transaction)
+            return await createToken(`verify`, req.body.redirectUrl, req.user, transaction)
         })
             .then(token => {
                 return res.status(200).json({
@@ -129,7 +119,7 @@ class AuthController {
                 transaction
             })
 
-            return await this.createToken(`pswReset`, req.body.redirectUrl, req.user, transaction)
+            return await createToken(`pswReset`, req.body.redirectUrl, req.user, transaction)
         })
             .then(token => {
                 return res.status(200).json({
@@ -146,7 +136,7 @@ class AuthController {
 
     login = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
-            return await this.createToken(`session`, null, req.user, transaction)
+            return await createToken(`session`, null, req.user, transaction)
         })
             .then(token => {
                 res.status(200).json({
