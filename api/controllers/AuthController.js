@@ -24,6 +24,7 @@ class AuthController {
                 login: req.body.login,
                 password: req.body.password,
                 email: req.body.email,
+                fullName: req.body.fullName,
                 avatar: req.filePath
             }, { transaction })
 
@@ -51,6 +52,7 @@ class AuthController {
                 login: req.body.login,
                 password: req.body.password,
                 email: req.body.email,
+                fullName: req.body.fullName,
                 avatar: req.filePath,
                 role: req.body.role,
                 verified: true
