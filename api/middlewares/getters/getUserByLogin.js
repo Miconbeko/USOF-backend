@@ -30,6 +30,6 @@ export default function getUserByLogin(req, res, next) {
             next()
         })
         .catch(err => {
-            transactionErrorHandler(retryError(getUserByLogin, err), req, res, next)
+            return transactionErrorHandler(retryError(getUserByLogin, err), req, res, next)
         })
 }
