@@ -24,7 +24,7 @@ class AuthController {
                 login: req.body.login,
                 password: req.body.password,
                 email: req.body.email,
-                avatar: req.filePath,
+                avatar: req.filePath
             }, { transaction })
 
             const token = await this.createToken(`verify`, req.body.redirectUrl, user, transaction)
@@ -46,7 +46,25 @@ class AuthController {
     }
 
     adminRegister = async (req, res, next) => {
-
+        sequelize.inTransaction(async transaction => {
+            return await models.User.create({
+                login: req.body.login,
+                password: req.body.password,
+                email: req.body.email,
+                avatar: req.filePath,
+                role: req.body.role,
+                verified: true
+            }, { transaction })
+        })
+            .then(result => {
+                return res.status(201).json({
+                    message: `Registration complete`,
+                    user: result.toJSON()
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.register, err), req, res, next)
+            })
     }
 
     verifyEmail = async (req, res, next) => {
