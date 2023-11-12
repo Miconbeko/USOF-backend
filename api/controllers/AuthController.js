@@ -39,7 +39,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.register, err), req, res, next)
+                return transactionErrorHandler(retryError(this.register, err), req, res, next)
             })
 
         // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
@@ -63,7 +63,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.register, err), req, res, next)
+                return transactionErrorHandler(retryError(this.register, err), req, res, next)
             })
     }
 
@@ -88,7 +88,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.verifyEmail, err), req, res, next)
+                return transactionErrorHandler(retryError(this.verifyEmail, err), req, res, next)
             })
     }
 
@@ -136,7 +136,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.sendPswResetToken, err), req, res, next)
+                return transactionErrorHandler(retryError(this.sendPswResetToken, err), req, res, next)
             })
 
         // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
@@ -153,7 +153,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.login, err), req, res, next)
+                return transactionErrorHandler(retryError(this.login, err), req, res, next)
             })
     }
 
@@ -167,7 +167,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.logout, err), req, res, next)
+                return transactionErrorHandler(retryError(this.logout, err), req, res, next)
             })
     }
 
@@ -187,7 +187,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.fullLogout, err), req, res, next)
+                return transactionErrorHandler(retryError(this.fullLogout, err), req, res, next)
             })
     }
 
@@ -212,7 +212,7 @@ class AuthController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.changePassword, err), req, res, next)
+                return transactionErrorHandler(retryError(this.changePassword, err), req, res, next)
             })
     }
 }
