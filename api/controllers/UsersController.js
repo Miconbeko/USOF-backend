@@ -3,6 +3,7 @@ import { transactionErrorHandler } from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
 import getPaginationData from "../utils/getPaginationData.js";
 import upload from "../middlewares/imageUploader.js";
+import createToken from "../utils/createToken.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
@@ -53,6 +54,35 @@ class UsersController {
             })
             .catch(err => {
                 return transactionErrorHandler(retryError(this.changeInfo, err), req, res, next)
+            })
+    }
+
+    sendDeleteToken = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            return await createToken('delete', req.body.redirectUrl, req.user, transaction)
+        })
+            .then(token => {
+                res.status(200).json({
+                    message: `Deletion link is send`,
+                    token: token.token
+                })
+            })
+            .catch(err => {
+                return transactionErrorHandler(retryError(this.sendDeleteToken, err), req, res, next)
+            })
+    }
+
+    delete = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await req.user.destroy({ transaction })
+        })
+            .then(() => {
+                res.status(200).json({
+                    message: "Account successfully deleted"
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.delete, err), req, res, next)
             })
     }
 }

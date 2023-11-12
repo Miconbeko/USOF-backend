@@ -98,7 +98,8 @@ export default function (sequelize) {
 
     function tokenHasUser() {
         models.User.hasMany(models.Token, {
-            foreignKey: `userId`
+            foreignKey: `userId`,
+            onDelete: `CASCADE`
         })
         models.Token.belongsTo(models.User, {
             foreignKey: `userId`,
