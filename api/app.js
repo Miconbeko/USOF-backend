@@ -7,6 +7,7 @@ import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js"
 
 import authRoutes from "./routes/auth.js"
 import usersRoutes from "./routes/users.js"
+import rateLimiter from "./middlewares/rateLimiter.js";
 
 const app = express()
 
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use(logger.getFileLogger())
 app.use(logger.getConsoleLogger())
 
+app.use(rateLimiter)
 app.use(express.static(`uploads`))
 app.use(`/api/auth`, authRoutes)
 app.use(`/api/users`, usersRoutes)
