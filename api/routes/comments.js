@@ -10,5 +10,6 @@ const router = express.Router()
 
 router.get(`/:id`, paramIdValidator, validationErrorHandler, getCommentById, commentsController.getOne)
 router.patch(`/:id`, paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCommentById, checkTokenSession, checkOwner, commentsController.edit)
+router.delete(`/:id`, paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCommentById, checkTokenSession, checkOwner, commentsController.delete)
 
 export default router
