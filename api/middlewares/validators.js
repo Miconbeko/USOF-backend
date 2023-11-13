@@ -28,3 +28,4 @@ export const registerValidator = [passwordRegisterValidator, loginRegisterValida
 export const adminRegisterValidator = [registerValidator, roleRegisterValidator]
 export const loginInValidator = [loginOrEmailValidator, passwordValidator]
 export const postCreationValidator = [postTitleCreationValidator, postContentCreationValidator]
+export const commentCreationValidator = [postContentCreationValidator]

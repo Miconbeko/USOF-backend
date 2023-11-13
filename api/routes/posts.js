@@ -1,5 +1,6 @@
 import express from "express"
 import {
+    commentCreationValidator,
     paginationValidator,
     paramIdValidator,
     postCreationValidator,
@@ -16,5 +17,8 @@ const router = express.Router()
 router.post(`/`, postCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, PostsController.create)
 router.get(`/`, paginationValidator, validationErrorHandler, getPaginationParams, PostsController.getAll)
 router.get(`/:id`, paramIdValidator, validationErrorHandler, getPostById, PostsController.getOne)
+router.get(`/:id/comments`, paramIdValidator, paginationValidator, validationErrorHandler, getPaginationParams, getPostById, PostsController.getComments)
+router.post(`/:id/comments`, paramIdValidator, tokenValidator, commentCreationValidator, validationErrorHandler, getDataFromToken, getUserByToken, getPostById, checkTokenSession, PostsController.createComment)
+
 
 export default router
