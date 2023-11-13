@@ -14,6 +14,7 @@ export default function getPostById(req, res, next) {
                 return next(new ServerError(`Post not found`, 404))
 
             req.post = post
+            req.body.ownerId = post.userId
             next()
         })
         .catch(err => {
