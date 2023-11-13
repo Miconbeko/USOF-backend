@@ -78,6 +78,23 @@ export default function (sequelize) {
         })
     }
 
+    function commentHasComment() {
+        models.Comment.belongsTo(models.Comment, {
+            foreignKey: `commentId`,
+            as: `comment`
+        })
+    }
+
+    function postHasComments() {
+        models.Post.hasMany(models.Comment, {
+            foreignKey: `postId`
+        })
+        models.Comment.belongsTo(models.Post, {
+            foreignKey: `postId`,
+            as: `post`
+        })
+    }
+
     function initMarkPolimorfic() {  // TODO: Test it
         models.Mark.addHook(`afterFind`, (findResult) => {
             if (!Array.isArray(findResult))
@@ -114,6 +131,8 @@ export default function (sequelize) {
     markHasAuthor()
     postHasMarks()
     commentHasMarks()
+    commentHasComment()
+    postHasComments()
     initMarkPolimorfic()
     tokenHasUser()
 }

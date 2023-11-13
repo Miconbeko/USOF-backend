@@ -56,6 +56,56 @@ class PostsController {
             post: req.post
         })
     }
+
+    getComments = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            const [count, rows] = await Promise.all([
+                req.post.countComments({ transaction }),
+
+                req.post.getComments({
+                    include: `author`,
+                    offset: req.page.offset,
+                    limit: req.page.limit,
+                    transaction
+                })
+            ])
+
+            return { count, rows }
+        })
+            .then(result => {
+                const data = getPaginationData(result, req.query.page, req.query.size)
+
+                res.status(200).json({
+                    pagination: data.metadata,
+                    comments: data.items
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.getComments, err), req, res, next)
+            })
+    }
+
+    createComment = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            const comment = await models.Comment.create({
+                content: req.body.content
+            }, { transaction })
+
+            await comment.setAuthor(req.user, { transaction })
+            await comment.setPost(req.post, { transaction })
+
+            return comment
+        })
+            .then(comment => {
+                res.status(201).json({
+                    message: `Comment successfully created`,
+                    comment
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.createComment, err), req, res, next)
+            })
+    }
 }
 
 export default new PostsController()

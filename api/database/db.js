@@ -61,7 +61,7 @@ sequelize.createTable = async (config) => {
 
 sequelize.initDatabase = async () => {
     await sequelize.testConnection()
-    await sequelize.createTable({ force: true })
+    await sequelize.createTable({ alter: true })
 }
 
 sequelize.queue = new PQueue({concurrency: (sequelize.connectionManager.pool.maxSize - 1)});
