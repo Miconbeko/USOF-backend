@@ -22,6 +22,7 @@ export const tokenValidator = createObligatoryValidator(`token`)
 
 export const paramTokenValidator = createParamObligatoryValidator(`token`)
 export const paramLoginValidator = createParamObligatoryValidator(`login`)
+export const paramIdValidator = createParamObligatoryValidator(`id`)
 
 export const registerValidator = [passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator, fullNameRegisterValidator]
 export const adminRegisterValidator = [registerValidator, roleRegisterValidator]
