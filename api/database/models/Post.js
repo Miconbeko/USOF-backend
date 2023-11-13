@@ -4,7 +4,7 @@ export default async function (sequelize, DataTypes) {
             type: DataTypes.STRING(60),
             allowNull: false,
             validate: {
-                len: [5, 60],
+                len: [5, 150],
                 notEmpty: true
             }
         },
