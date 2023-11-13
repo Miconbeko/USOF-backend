@@ -5,9 +5,11 @@ import checkVerified from "./checkers/checkVerified.js";
 import checkNotVerified from "./checkers/checkNotVerified.js";
 import checkPassword from "./checkers/checkPassword.js";
 import checkToken from "./checkers/checkToken.js";
+import checkOwner from "./checkers/checkOwner.js";
 
 
-export { checkEmailOrLoginExists, checkVerified, checkNotVerified, checkPassword, checkToken }
+export { checkEmailOrLoginExists, checkVerified, checkNotVerified,
+    checkPassword, checkToken, checkOwner }
 
 export const checkTokenTypeVerify = createTokenTypeChecker(`verify`)
 export const checkTokenTypePswReset = createTokenTypeChecker(`pswReset`)
