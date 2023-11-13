@@ -50,6 +50,12 @@ class PostsController {
                 transactionErrorHandler(retryError(this.getAll, err), req, res, next)
             })
     }
+
+    getOne = async (req, res, next) => {
+        res.status(200).json({
+            post: req.post
+        })
+    }
 }
 
 export default new PostsController()
