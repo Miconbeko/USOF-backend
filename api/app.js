@@ -8,6 +8,7 @@ import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js"
 import authRoutes from "./routes/auth.js"
 import usersRoutes from "./routes/users.js"
 import rateLimiter from "./middlewares/rateLimiter.js";
+import postsRoutes from "./routes/posts.js";
 
 const app = express()
 
@@ -20,6 +21,7 @@ app.use(rateLimiter)
 app.use(express.static(`uploads`))
 app.use(`/api/auth`, authRoutes)
 app.use(`/api/users`, usersRoutes)
+app.use(`/api/posts`, postsRoutes)
 
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)
