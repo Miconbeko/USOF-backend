@@ -5,7 +5,7 @@ import { transactionErrorHandler } from "../errors/handlers.js";
 import createToken from "../utils/createToken.js";
 
 const Op = sequelize.Sequelize.Op
-const models = sequelize.models;
+const models = sequelize.models
 
 class AuthController {
     register = (req, res, next) => {  // TODO: Maybe create middleware for this
@@ -15,7 +15,8 @@ class AuthController {
                 password: req.body.password,
                 email: req.body.email,
                 fullName: req.body.fullName,
-                avatar: req.filePath
+                avatar: req.filePath,
+                role: `admin` //TODO: Change this!!!! only for testing
             }, { transaction })
 
             const token = await createToken(`verify`, req.body.redirectUrl, user, transaction)

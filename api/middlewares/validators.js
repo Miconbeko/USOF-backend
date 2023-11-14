@@ -10,12 +10,14 @@ import roleRegisterValidator from "./validators/roleRegisterValidator.js";
 import fullNameRegisterValidator from "./validators/fullNameRegisterValidator.js";
 import postTitleCreationValidator from "./validators/postTitleCreationValidator.js";
 import postContentCreationValidator from "./validators/postContentCreationValidator.js";
-
+import categoryContentCreationValidator from "./validators/categoryContentCreationValidator.js";
+import categoryTitleCreationValidator from "./validators/categoryTitleCreationValidator.js";
 
 
 export { passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator,
     loginOrEmailValidator, paginationValidator, roleRegisterValidator,
-    fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator}
+    fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator,
+    categoryContentCreationValidator, categoryTitleCreationValidator}
 
 export const passwordValidator = createObligatoryValidator(`password`)
 export const tokenValidator = createObligatoryValidator(`token`)
@@ -29,3 +31,4 @@ export const adminRegisterValidator = [registerValidator, roleRegisterValidator]
 export const loginInValidator = [loginOrEmailValidator, passwordValidator]
 export const postCreationValidator = [postTitleCreationValidator, postContentCreationValidator]
 export const commentCreationValidator = [postContentCreationValidator]
+export const categoryCreationValidator = [categoryTitleCreationValidator, categoryContentCreationValidator]
