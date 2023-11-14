@@ -17,5 +17,7 @@ const router = express.Router()
 router.get(`/`, paginationValidator, validationErrorHandler, getPaginationParams, CategoriesController.getAll)
 router.get(`/:id`, paramIdValidator, validationErrorHandler, getCategoryById, CategoriesController.getOne)
 router.post(`/`, categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, CategoriesController.create)
+router.patch(`/:id`, paramIdValidator, categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCategoryById, checkTokenSession, checkAdmin, CategoriesController.edit)
+router.delete(`/:id`, paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCategoryById, checkTokenSession, checkAdmin, CategoriesController.delete)
 
 export default router
