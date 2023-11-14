@@ -10,6 +10,7 @@ import usersRoutes from "./routes/users.js"
 import rateLimiter from "./middlewares/rateLimiter.js";
 import postsRoutes from "./routes/posts.js";
 import commentsRouters from "./routes/comments.js";
+import categoriesRouters from "./routes/categories.js";
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(`/api/auth`, authRoutes)
 app.use(`/api/users`, usersRoutes)
 app.use(`/api/posts`, postsRoutes)
 app.use(`/api/comments`, commentsRouters)
+app.use(`/api/categories`, categoriesRouters)
 
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)
