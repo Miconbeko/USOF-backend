@@ -1,18 +1,18 @@
 import express from "express"
-import UsersController from "../controllers/UsersController.js";
+import UsersController from "../../controllers/UsersController.js";
 
-import {getDataFromToken, getPaginationParams, getUserByLogin, getUserByToken} from "../middlewares/getters.js";
+import {getDataFromToken, getPaginationParams, getUserByLogin, getUserByToken} from "../../middlewares/getters.js";
 
 import {
     fullNameRegisterValidator,
     paginationValidator,
     paramLoginValidator, paramTokenValidator,
     tokenValidator
-} from "../middlewares/validators.js";
+} from "../../middlewares/validators.js";
 
-import { validationErrorHandler } from "../errors/handlers.js"
-import upload, {compressImage} from "../middlewares/imageUploader.js";
-import {checkTokenDelete, checkTokenSession} from "../middlewares/checkers.js";
+import { validationErrorHandler } from "../../errors/handlers.js"
+import upload, {compressImage} from "../../middlewares/imageUploader.js";
+import {checkTokenDelete, checkTokenSession} from "../../middlewares/checkers.js";
 
 
 const router = express.Router()

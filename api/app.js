@@ -5,12 +5,8 @@ import "./utils/userDeleteSchedule.js"
 
 import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js"
 
-import authRoutes from "./routes/auth.js"
-import usersRoutes from "./routes/users.js"
+import {authRoutes, postsRoutes, usersRoutes, commentsRoutes, categoriesRoutes} from "./routes/routes.js"
 import rateLimiter from "./middlewares/rateLimiter.js";
-import postsRoutes from "./routes/posts.js";
-import commentsRouters from "./routes/comments.js";
-import categoriesRouters from "./routes/categories.js";
 
 const app = express()
 
@@ -24,8 +20,8 @@ app.use(express.static(`uploads`))
 app.use(`/api/auth`, authRoutes)
 app.use(`/api/users`, usersRoutes)
 app.use(`/api/posts`, postsRoutes)
-app.use(`/api/comments`, commentsRouters)
-app.use(`/api/categories`, categoriesRouters)
+app.use(`/api/comments`, commentsRoutes)
+app.use(`/api/categories`, categoriesRoutes)
 
 app.use(routeErrorHandler)
 app.use(globalErrorHandler)

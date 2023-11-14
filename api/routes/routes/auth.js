@@ -1,20 +1,20 @@
 import express from "express"
-import { default as upload, compressImage } from "../middlewares/imageUploader.js";
-import AuthController from "../controllers/AuthController.js";
+import { default as upload, compressImage } from "../../middlewares/imageUploader.js";
+import AuthController from "../../controllers/AuthController.js";
 
-import { getUserByLogin, getDataFromToken, getUserByToken } from "../middlewares/getters.js";
+import { getUserByLogin, getDataFromToken, getUserByToken } from "../../middlewares/getters.js";
 
 import {
         passwordRegisterValidator, registerValidator, loginOrEmailValidator,
         loginInValidator, tokenValidator, paramTokenValidator, adminRegisterValidator
-} from "../middlewares/validators.js";
+} from "../../middlewares/validators.js";
 
 import { checkEmailOrLoginExists, checkVerified, checkNotVerified,
         checkPassword, checkTokenVerify, checkTokenPswReset,
-        checkTokenSession } from "../middlewares/checkers.js";
+        checkTokenSession } from "../../middlewares/checkers.js";
 
-import { validationErrorHandler } from "../errors/handlers.js"
-import checkAdmin from "../middlewares/checkers/checkAdmin.js";
+import { validationErrorHandler } from "../../errors/handlers.js"
+import checkAdmin from "../../middlewares/checkers/checkAdmin.js";
 
 
 const router = express.Router()
