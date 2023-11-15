@@ -26,7 +26,7 @@ const clearOldRecords = async () => {
                 transaction
             }),
 
-            sequelize.models.Token.destroy({
+            sequelize.models.Token.destroy({        //TODO: Refactor
                 where: {
                     createdAt: {
                         [Op.lte]: dayBefore

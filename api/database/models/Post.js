@@ -8,11 +8,11 @@ export default async function (sequelize, DataTypes) {
                 notEmpty: true
             }
         },
-        status: {
-            type: DataTypes.ENUM(`active`, `inactive`),
-            allowNull: false,
-            defaultValue: `active`
-        },
+        // status: {
+        //     type: DataTypes.ENUM(`active`, `inactive`),
+        //     allowNull: false,
+        //     defaultValue: `active`
+        // },
         content: {
             type: DataTypes.TEXT,
             allowNull: false,

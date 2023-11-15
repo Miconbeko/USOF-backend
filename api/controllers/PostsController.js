@@ -2,6 +2,7 @@ import sequelize from "../database/db.js"
 import getPaginationData from "../utils/getPaginationData.js";
 import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
+import createToken from "../utils/createToken.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -137,6 +138,56 @@ class PostsController {
             })
             .catch(err => {
                 transactionErrorHandler(retryError(this.createComment, err), req, res, next)
+            })
+    }
+
+    delete = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await req.post.destroy({ transaction })
+        })
+            .then(() => {
+                res.status(200).json({
+                    message: `Post successfully deleted`
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.delete, err), req, res, next)
+            })
+    }
+
+    lock = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await (await req.post.getLock({ transaction }))?.destroy({ transaction })
+
+            const token = await createToken(`lock`, null, req.user, transaction, req.body.timer)
+
+            await req.post.setLock(token, { transaction })
+
+            return token
+        })
+            .then(token => {
+                res.status(200).json({
+                    message: `Post successfully locked`,
+                    post: req.post
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.lock, err), req, res, next)
+            })
+    }
+
+    unlock = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await (await req.post.getLock({ transaction }))?.destroy({ transaction })
+        })
+            .then(() => {
+                res.status(200).json({
+                    message: `Post successfully unlocked`,
+                    post: req.post
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.unlock, err), req, res, next)
             })
     }
 }
