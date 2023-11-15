@@ -14,7 +14,7 @@ export default [
         .escape(),
     query(`size`)
         .default(10)
-        .isInt({min: 1, max: 1000})
+        .isInt({min: 1, max: 50})
         .escape(),
     // query()
     //     .custom(toBody)
