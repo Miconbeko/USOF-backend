@@ -31,6 +31,37 @@ class PostsController {
             })
     }
 
+    edit = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            const [post ] = await Promise.all([
+                await req.post.update({
+                    title: req.body.title,
+                    content: req.body.content
+                }, { transaction }),
+
+                await models.PostCategories.destroy({
+                    where: {
+                        PostId: req.post.id
+                    },
+                    transaction
+                })
+            ])
+
+            await post.addCategories(req.categories, { transaction })
+
+            return post
+        })
+            .then(post => {
+                res.status(200).json({
+                    message: `Post successfully changed`,
+                    post
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.edit, err), req, res, next)
+            })
+    }
+
     getAll = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
             return await models.Post.findAndCountAll({
