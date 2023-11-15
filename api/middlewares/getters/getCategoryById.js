@@ -5,7 +5,7 @@ import retryError from "../../errors/RetryError.js";
 
 const models = sequelize.models
 
-export default function getCommentById(req, res, next) {
+export default function getCategoryById(req, res, next) {
     sequelize.inTransaction(async transaction => {
         return await models.Category.findByPk(req.body.id, { transaction })
     })
@@ -17,6 +17,6 @@ export default function getCommentById(req, res, next) {
             next()
         })
         .catch(err => {
-            return transactionErrorHandler(retryError(getCommentById, err), req, res, next)
+            return transactionErrorHandler(retryError(getCategoryById, err), req, res, next)
         })
 }

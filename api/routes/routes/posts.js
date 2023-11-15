@@ -10,11 +10,12 @@ import {validationErrorHandler} from "../../errors/handlers.js";
 import PostsController from "../../controllers/PostsController.js";
 import {getDataFromToken, getPaginationParams, getPostById, getUserByToken} from "../../middlewares/getters.js";
 import {checkTokenSession} from "../../middlewares/checkers.js";
+import getCategoriesByIds from "../../middlewares/getters/getCategoriesByIds.js";
 
 
 const router = express.Router()
 
-router.post(`/`,                postCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, PostsController.create)
+router.post(`/`,                postCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCategoriesByIds, checkTokenSession, PostsController.create)
 router.get(`/`,                 paginationValidator, validationErrorHandler, getPaginationParams, PostsController.getAll)
 router.get(`/:id`,              paramIdValidator, validationErrorHandler, getPostById, PostsController.getOne)
 router.get(`/:id/comments`,     paramIdValidator, paginationValidator, validationErrorHandler, getPaginationParams, getPostById, PostsController.getComments)
