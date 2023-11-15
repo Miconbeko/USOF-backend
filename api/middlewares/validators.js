@@ -12,12 +12,13 @@ import postTitleCreationValidator from "./validators/postTitleCreationValidator.
 import postContentCreationValidator from "./validators/postContentCreationValidator.js";
 import categoryContentCreationValidator from "./validators/categoryContentCreationValidator.js";
 import categoryTitleCreationValidator from "./validators/categoryTitleCreationValidator.js";
+import postCategoriesCreationValidator from "./validators/postCategoriesCreationValidator.js";
 
 
 export { passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator,
     loginOrEmailValidator, paginationValidator, roleRegisterValidator,
     fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator,
-    categoryContentCreationValidator, categoryTitleCreationValidator}
+    categoryContentCreationValidator, categoryTitleCreationValidator, postCategoriesCreationValidator}
 
 export const passwordValidator = createObligatoryValidator(`password`)
 export const tokenValidator = createObligatoryValidator(`token`)
@@ -29,6 +30,6 @@ export const paramIdValidator = createParamObligatoryValidator(`id`)
 export const registerValidator = [passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator, fullNameRegisterValidator]
 export const adminRegisterValidator = [registerValidator, roleRegisterValidator]
 export const loginInValidator = [loginOrEmailValidator, passwordValidator]
-export const postCreationValidator = [postTitleCreationValidator, postContentCreationValidator]
+export const postCreationValidator = [postTitleCreationValidator, postContentCreationValidator, postCategoriesCreationValidator]
 export const commentCreationValidator = [postContentCreationValidator]
 export const categoryCreationValidator = [categoryTitleCreationValidator, categoryContentCreationValidator]

@@ -16,6 +16,8 @@ class PostsController {
 
             await post.setAuthor(req.user, { transaction })
 
+            await post.addCategories(req.categories, { transaction })
+
             return post
         })
             .then(post => {
