@@ -14,10 +14,15 @@ import {checkTokenSession} from "../../middlewares/checkers.js";
 
 const router = express.Router()
 
+
+router.post(`/`,        categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, CategoriesController.create)
+
+router.put(`/:id`,    paramIdValidator, categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, getCategoryById, CategoriesController.edit)
+
 router.get(`/`,         paginationValidator, validationErrorHandler, getPaginationParams, CategoriesController.getAll)
 router.get(`/:id`,      paramIdValidator, validationErrorHandler, getCategoryById, CategoriesController.getOne)
-router.post(`/`,        categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, CategoriesController.create)
-router.patch(`/:id`,    paramIdValidator, categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCategoryById, checkTokenSession, checkAdmin, CategoriesController.edit)
-router.delete(`/:id`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCategoryById, checkTokenSession, checkAdmin, CategoriesController.delete)
+
+router.delete(`/:id`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, getCategoryById, CategoriesController.delete)
+
 
 export default router
