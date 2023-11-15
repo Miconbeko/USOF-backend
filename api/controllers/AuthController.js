@@ -104,6 +104,7 @@ class AuthController {
                 })
             })
             .catch(err => {
+                console.log(err)
                 return transactionErrorHandler(retryError(this.sendVerifyToken, err), req, res, next)
             })
 

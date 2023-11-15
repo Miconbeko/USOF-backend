@@ -13,12 +13,14 @@ import postContentCreationValidator from "./validators/postContentCreationValida
 import categoryContentCreationValidator from "./validators/categoryContentCreationValidator.js";
 import categoryTitleCreationValidator from "./validators/categoryTitleCreationValidator.js";
 import postCategoriesCreationValidator from "./validators/postCategoriesCreationValidator.js";
+import timerValidator from "./validators/timerValidator.js";
 
 
 export { passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator,
     loginOrEmailValidator, paginationValidator, roleRegisterValidator,
     fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator,
-    categoryContentCreationValidator, categoryTitleCreationValidator, postCategoriesCreationValidator}
+    categoryContentCreationValidator, categoryTitleCreationValidator, postCategoriesCreationValidator,
+    timerValidator}
 
 export const passwordValidator = createObligatoryValidator(`password`)
 export const tokenValidator = createObligatoryValidator(`token`)

@@ -1,4 +1,7 @@
 export default offset => {
+    if (offset.permament === true)
+        return null
+
     offset = {
         days: offset.days ?? 0,
         hours: offset.hours ?? 0,

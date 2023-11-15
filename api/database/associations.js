@@ -95,6 +95,13 @@ export default function (sequelize) {
         })
     }
 
+    function postHasToken() {
+        models.Post.belongsTo(models.Token, {
+            foreignKey: `lockId`,
+            as: `lock`
+        })
+    }
+
     function initMarkPolimorfic() {  // TODO: Test it
         models.Mark.addHook(`afterFind`, (findResult) => {
             if (!Array.isArray(findResult))
@@ -133,6 +140,7 @@ export default function (sequelize) {
     commentHasMarks()
     commentHasComment()
     postHasComments()
+    postHasToken()
     initMarkPolimorfic()
     tokenHasUser()
 }
