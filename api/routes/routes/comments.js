@@ -1,19 +1,21 @@
 import express from "express"
 import {commentCreationValidator, paramIdValidator, tokenValidator} from "../../middlewares/validators.js";
-import {getCommentById, getDataFromToken, getUserByToken} from "../../middlewares/getters.js";
+import {getCommentById, getDataFromToken, getPostByComment, getUserByToken} from "../../middlewares/getters.js";
 import CommentsController from "../../controllers/CommentsController.js";
 import {validationErrorHandler} from "../../errors/handlers.js";
-import {checkOwner, checkTokenSession} from "../../middlewares/checkers.js";
+import {checkNotLocked, checkOwner, checkTokenSession} from "../../middlewares/checkers.js";
 
 
 const router = express.Router()
 
 
-router.get(`/:id`,      paramIdValidator, validationErrorHandler, getCommentById, CommentsController.getOne)
+router.post(`/:id/comment`,  paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.create)
 
-router.put(`/:id`,    paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCommentById, checkTokenSession, checkOwner, CommentsController.edit)
+router.put(`/:id`,          paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.edit)
 
-router.delete(`/:id`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, getCommentById, checkTokenSession, checkOwner, CommentsController.delete)
+router.get(`/:id`,          paramIdValidator, validationErrorHandler, getCommentById, CommentsController.getOne)
+
+router.delete(`/:id`,       paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.delete)
 
 
 export default router

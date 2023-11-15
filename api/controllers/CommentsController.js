@@ -6,6 +6,29 @@ const Op = sequelize.Sequelize.Op
 const models = sequelize.models
 
 class CommentsController{
+    create = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            const comment = await models.Comment.create({
+                content: req.body.content
+            }, { transaction })
+
+            await comment.setAuthor(req.user, { transaction })
+            await comment.setPost(req.post, { transaction })
+            await comment.setComment(req.comment, { transaction })
+
+            return comment
+        })
+            .then(comment => {
+                res.status(201).json({
+                    message: `Comment successfully created`,
+                    comment
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.create, err), req, res, next)
+            })
+    }
+
     getOne = async (req, res, next) => {
         res.status(200).json({
             comment: req.comment
