@@ -2,8 +2,10 @@ import schedule from "node-schedule"
 import sequelize from "../database/db.js";
 import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
+import getOffsetDate from "./getOffsetDate.js";
 
 const Op = sequelize.Sequelize.Op
+const models = sequelize.models
 
 const rule = new schedule.RecurrenceRule()
 rule.hour = 12
@@ -11,35 +13,44 @@ rule.minute = 0
 rule.second = 0
 
 const clearOldRecords = async () => {
-    const dayBefore = new Date()
-    dayBefore.setDate(dayBefore.getDate() - 1)
+    const currentDate = new Date()
 
     sequelize.inTransaction(async transaction => {
-        await Promise.all([
-            sequelize.models.User.destroy({
+        const unverifiedUsers = await models.User.findAll({
+            where: {
+                verified: false
+            },
+            include: [{
+                model: models.Token,
                 where: {
-                    verified: false,
-                    createdAt: {
-                        [Op.lte]: dayBefore
+                    type: `verify`,
+                    expiredAt: {
+                        [Op.lte]: currentDate
                     }
                 },
                 transaction
-            }),
+            }],
+            transaction
+        })
 
-            sequelize.models.Token.destroy({        //TODO: Refactor
-                where: {
-                    createdAt: {
-                        [Op.lte]: dayBefore
-                    }
-                },
-                transaction
-            })
-        ])
+        for (const user of unverifiedUsers) {
+            await user.destroy({ transaction })
+        }
+
+        await models.Token.destroy({
+            where: {
+                expiredAt: {
+                    [Op.lte]: currentDate
+                }
+            },
+            transaction
+        })
     })
         .then(() => {
             console.log("Deletion job executed") // TODO: need to log this
         })
         .catch(err => {
+            console.log(err)
             transactionErrorHandler(retryError(clearOldRecords, err), null, null, null)
         })
 
