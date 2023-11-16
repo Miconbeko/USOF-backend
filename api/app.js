@@ -2,6 +2,7 @@ import express from "express"
 import cors from "cors"
 import logger from "./middlewares/logger.js"
 import "./utils/recordsDeleteSchedule.js"
+import "./utils/dbDumpSchedule.js"
 
 import { globalErrorHandler, routeErrorHandler } from "./errors/handlers.js"
 

@@ -2,7 +2,8 @@ import fs from "fs"
 import path from "path"
 import Sequelize from "sequelize"
 import PQueue from "p-queue"
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'url'
+import mysqldump from "mysqldump"
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -62,6 +63,24 @@ sequelize.createTable = async (config) => {
 sequelize.initDatabase = async () => {
     await sequelize.testConnection()
     await sequelize.createTable()
+}
+
+sequelize.dump = (filePath) => {
+    mysqldump({
+        connection: {
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_NAME,
+        },
+        dumpToFile: filePath,
+    })
+        .then(() => {
+            console.log(`Dump completed in ${filePath}`)    // TODO: log it
+        })
+        .catch(err => {
+            console.log(err)
+        })
 }
 
 sequelize.queue = new PQueue({concurrency: (sequelize.connectionManager.pool.maxSize - 1)});
