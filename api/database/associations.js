@@ -33,7 +33,8 @@ export default function (sequelize) {
 
     function postHasCategories() {
         models.Post.belongsToMany(models.Category, {
-            through: `PostCategories`
+            through: `PostCategories`,
+            as: `categories`
         })
         models.Category.belongsToMany(models.Post, {
             through: `PostCategories`

@@ -37,7 +37,7 @@ function initSettiong() {
 
     settings = new Map()
 
-    settings.set(models.Category, [])
+    settings.set(models.Category, [`PostCategories`])
     settings.set(models.Comment, [])
     settings.set(models.Mark, [`markableType`, `markableId`])
     settings.set(models.Post, [`lockId`])

@@ -67,6 +67,13 @@ class PostsController {
     getAll = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
             return await models.Post.findAndCountAll({
+                include: [{
+                    model: models.Token,
+                    as: `lock`
+                }, {
+                    model: models.Category,
+                    as: `categories`
+                }],
                 order: [[`title`, `DESC`]],
                 offset: req.page.offset,
                 limit: req.page.limit,
