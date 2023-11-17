@@ -22,7 +22,7 @@ class CategoriesController{
 
                 res.status(200).json({
                     pagination: data.metadata,
-                    categories: data.items
+                    categories: sanitize(data.items)
                 })
             })
             .catch(err => {
@@ -30,9 +30,15 @@ class CategoriesController{
             })
     }
 
+    getArray = async (req, res, next) => {
+        res.status(200).json({
+            categories: sanitize(req.categories)
+        })
+    }
+
     getOne = async (req, res, next) => {
         res.status(200).json({
-            category: req.category
+            category: sanitize(req.category)
         })
     }
 
