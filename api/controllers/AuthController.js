@@ -3,6 +3,7 @@ import retryError from "../errors/RetryError.js";
 
 import { transactionErrorHandler } from "../errors/handlers.js";
 import createToken from "../utils/createToken.js";
+import sanitize from "../utils/modelSanitizer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -26,7 +27,7 @@ class AuthController {
             .then(result => {
                 return res.status(201).json({
                     message: `Registration complete`,
-                    user: result.user.toJSON(),
+                    user: sanitize(result.user),
                     token: result.token.token
                 })
             })
@@ -49,10 +50,10 @@ class AuthController {
                 verified: true
             }, { transaction })
         })
-            .then(result => {
+            .then(user => {
                 return res.status(201).json({
                     message: `Registration complete`,
-                    user: result.toJSON()
+                    user: sanitize(user)
                 })
             })
             .catch(err => {
@@ -99,12 +100,11 @@ class AuthController {
         })
             .then(token => {
                 return res.status(200).json({
-                    message: `Validation link is send`,
+                    message: `Validation link is sent`,
                     token: token.token
                 })
             })
             .catch(err => {
-                console.log(err)
                 return transactionErrorHandler(retryError(this.sendVerifyToken, err), req, res, next)
             })
 
@@ -125,7 +125,7 @@ class AuthController {
         })
             .then(token => {
                 return res.status(200).json({
-                    message: `Password reset link is send`,
+                    message: `Password reset link is sent`,
                     token: token.token
                 })
             })

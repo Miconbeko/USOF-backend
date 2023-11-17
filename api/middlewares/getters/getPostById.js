@@ -7,7 +7,13 @@ const models = sequelize.models
 
 export default function getPostById(req, res, next) {
     sequelize.inTransaction(async transaction => {
-        return await models.Post.findByPk(req.body.id, { transaction })
+        return await models.Post.findByPk(req.body.id, {
+            include: {
+                model: models.Token,
+                as: `lock`
+            },
+            transaction
+        })
     })
         .then(post => {
             if (!post)

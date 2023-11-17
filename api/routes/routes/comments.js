@@ -9,7 +9,7 @@ import {checkNotLocked, checkOwner, checkTokenSession} from "../../middlewares/c
 const router = express.Router()
 
 
-router.post(`/:id/comment`,  paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.create)
+router.post(`/:id/comment`,  paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, CommentsController.create)
 
 router.put(`/:id`,          paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.edit)
 

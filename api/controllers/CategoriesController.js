@@ -2,13 +2,13 @@ import sequelize from "../database/db.js"
 import getPaginationData from "../utils/getPaginationData.js";
 import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
+import sanitize from "../utils/modelSanitizer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
 
 class CategoriesController{
     getAll = async (req, res, next) => {
-        console.log("here")
         sequelize.inTransaction(async transaction => {
             return await models.Category.findAndCountAll({
                 order: [[`title`, `DESC`]],
@@ -45,8 +45,8 @@ class CategoriesController{
         })
             .then(category => {
                 res.status(201).json({
-                    message: `Category successfully created`,
-                    category
+                    message: `Category is created`,
+                    category: sanitize(category)
                 })
             })
             .catch(err => {
@@ -63,8 +63,8 @@ class CategoriesController{
         })
             .then(category => {
                 res.status(200).json({
-                    message: `Category successfully edited`,
-                    category
+                    message: `Category is edited`,
+                    category: sanitize(category)
                 })
             })
             .catch(err => {
@@ -78,7 +78,7 @@ class CategoriesController{
         })
             .then(() => {
                 res.status(200).json({
-                    message: `Category successfully deleted`
+                    message: `Category is deleted`
                 })
             })
             .catch(err => {

@@ -50,7 +50,7 @@ const clearOldRecords = async () => {
             console.log("Deletion job executed") // TODO: need to log this
         })
         .catch(err => {
-            console.log(err)
+            console.log(err)    // TODO: need to log this
             transactionErrorHandler(retryError(clearOldRecords, err), null, null, null)
         })
 

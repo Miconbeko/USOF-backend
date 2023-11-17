@@ -1,6 +1,7 @@
 import sequelize from "../database/db.js"
 import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
+import sanitize from "../utils/modelSanitizer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -20,8 +21,8 @@ class CommentsController{
         })
             .then(comment => {
                 res.status(201).json({
-                    message: `Comment successfully created`,
-                    comment
+                    message: `Comment is created`,
+                    comment: sanitize(comment)
                 })
             })
             .catch(err => {
@@ -31,7 +32,7 @@ class CommentsController{
 
     getOne = async (req, res, next) => {
         res.status(200).json({
-            comment: req.comment
+            comment: sanitize(req.comment)
         })
     }
 
@@ -43,8 +44,8 @@ class CommentsController{
         })
             .then(comment => {
                 res.status(200).json({
-                    message: `Comment successfully edited`,
-                    comment
+                    message: `Comment is edited`,
+                    comment: sanitize(comment)
                 })
             })
             .catch(err => {
@@ -58,7 +59,7 @@ class CommentsController{
         })
             .then(() => {
                 res.status(200).json({
-                    message: `Comment successfully deleted`
+                    message: `Comment is deleted`
                 })
             })
             .catch(err => {

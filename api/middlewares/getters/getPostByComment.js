@@ -8,7 +8,13 @@ const models = sequelize.models
 
 export default function getPostByComment(req, res, next) {
     sequelize.inTransaction(async transaction => {
-        return await req.comment.getPost({ transaction })
+        return await req.comment.getPost({
+            include: {
+                model: models.Token,
+                as: `lock`
+            },
+            transaction
+        })
     })
         .then(post => {
             if (!post)

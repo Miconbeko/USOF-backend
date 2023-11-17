@@ -3,6 +3,7 @@ import getPaginationData from "../utils/getPaginationData.js";
 import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
 import createToken from "../utils/createToken.js";
+import sanitize from "../utils/modelSanitizer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -24,7 +25,7 @@ class PostsController {
             .then(post => {
                 res.status(201).json({
                     message: `Post successfully created`,
-                    post
+                    post: sanitize(post)
                 })
             })
             .catch(err => {
@@ -55,7 +56,7 @@ class PostsController {
             .then(post => {
                 res.status(200).json({
                     message: `Post successfully changed`,
-                    post
+                    post: sanitize(post)
                 })
             })
             .catch(err => {
@@ -77,7 +78,7 @@ class PostsController {
 
                 res.status(200).json({
                     pagination: data.metadata,
-                    posts: data.items
+                    posts: sanitize(data.items)
                 })
             })
             .catch(err => {
@@ -87,7 +88,7 @@ class PostsController {
 
     getOne = async (req, res, next) => {
         res.status(200).json({
-            post: req.post
+            post: sanitize(req.post)
         })
     }
 
@@ -97,7 +98,6 @@ class PostsController {
                 req.post.countComments({ transaction }),
 
                 req.post.getComments({
-                    include: `author`,
                     offset: req.page.offset,
                     limit: req.page.limit,
                     transaction
@@ -111,7 +111,7 @@ class PostsController {
 
                 res.status(200).json({
                     pagination: data.metadata,
-                    comments: data.items
+                    comments: sanitize(data.items)
                 })
             })
             .catch(err => {
@@ -132,8 +132,8 @@ class PostsController {
         })
             .then(comment => {
                 res.status(201).json({
-                    message: `Comment successfully created`,
-                    comment
+                    message: `Comment is created`,
+                    comment: sanitize(comment)
                 })
             })
             .catch(err => {
@@ -147,7 +147,7 @@ class PostsController {
         })
             .then(() => {
                 res.status(200).json({
-                    message: `Post successfully deleted`
+                    message: `Post is deleted`
                 })
             })
             .catch(err => {
@@ -167,8 +167,8 @@ class PostsController {
         })
             .then(token => {
                 res.status(200).json({
-                    message: `Post successfully locked`,
-                    post: req.post
+                    message: `Post is locked`,
+                    post: sanitize(req.post)
                 })
             })
             .catch(err => {
@@ -182,8 +182,8 @@ class PostsController {
         })
             .then(() => {
                 res.status(200).json({
-                    message: `Post successfully unlocked`,
-                    post: req.post
+                    message: `Post is unlocked`,
+                    post: sanitize(req.post)
                 })
             })
             .catch(err => {

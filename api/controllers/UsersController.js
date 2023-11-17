@@ -4,6 +4,7 @@ import retryError from "../errors/RetryError.js";
 import getPaginationData from "../utils/getPaginationData.js";
 import upload from "../middlewares/imageUploader.js";
 import createToken from "../utils/createToken.js";
+import sanitize from "../utils/modelSanitizer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
@@ -23,7 +24,7 @@ class UsersController {
 
                 res.status(200).json({
                     pagination: data.metadata,
-                    users: data.items
+                    users: sanitize(data.items)
                 })
             })
             .catch(err => {
@@ -33,7 +34,7 @@ class UsersController {
 
     getOne = async (req, res, next) => {
         res.status(200).json({
-            user: req.user
+            user: sanitize(req.user)
         })
     }
 
@@ -48,8 +49,8 @@ class UsersController {
         })
             .then(user => {
                 return res.status(200).json({
-                    message: `Personal information updated successfully`,
-                    user
+                    message: `Personal information is updated`,
+                    user: sanitize(user)
                 })
             })
             .catch(err => {
@@ -63,7 +64,7 @@ class UsersController {
         })
             .then(token => {
                 res.status(200).json({
-                    message: `Deletion link is send`,
+                    message: `Deletion link is sent`,
                     token: token.token
                 })
             })
@@ -78,7 +79,7 @@ class UsersController {
         })
             .then(() => {
                 res.status(200).json({
-                    message: "Account successfully deleted"
+                    message: "Account is deleted"
                 })
             })
             .catch(err => {
