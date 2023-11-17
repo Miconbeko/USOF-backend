@@ -14,7 +14,15 @@ export default function getPostById(req, res, next) {
             }, {
                 model: models.Category,
                 as: `categories`
-            }],
+            },
+                // {
+                //     model: models.Mark,
+                //     limit: 2,
+                //     where: {
+                //        userId: req.user.id
+                //     }
+                // }
+            ],
             transaction
         })
     })

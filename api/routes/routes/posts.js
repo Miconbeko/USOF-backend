@@ -19,6 +19,7 @@ const router = express.Router()
 
 router.post(`/`,                postCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCategoriesByIds, PostsController.create)
 router.post(`/:id/comments`,    paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkNotLocked, PostsController.createComment)
+// router.post(`/:id/like`,        paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkNotLocked, )
 
 router.put(`/:id`,              paramIdValidator, postCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkOwner, checkNotLocked, getCategoriesByIds, PostsController.edit)
 

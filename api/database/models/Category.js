@@ -7,6 +7,8 @@ export default async function (sequelize, DataTypes) {
         content:{
             type: DataTypes.STRING(1000)
         }
+    }, {
+        timestamps: false
     })
 
     return Category
