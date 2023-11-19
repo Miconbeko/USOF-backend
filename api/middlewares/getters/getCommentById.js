@@ -6,12 +6,35 @@ import retryError from "../../errors/RetryError.js";
 const models = sequelize.models
 
 export default function getCommentById(req, res, next) {
+    let include =[{
+        model: models.User,
+        as: `author`
+    }]
+    let includeMarks = {
+        model: models.Mark,
+        limit: 1,
+        where: {
+            userId: req.user?.id,
+            markableType: `comment`,
+        }
+    }
+
+    if (req.user)
+        include.push(includeMarks)
+
     sequelize.inTransaction(async transaction => {
-        return await models.Comment.findByPk(req.body.id, { transaction })
+        return await models.Comment.findByPk(req.body.id, {
+            include,
+            transaction
+        })
     })
         .then(comment => {
             if (!comment)
                 return next(new ServerError(`Comment not found`, 404))
+
+            req.mark = null
+            if (comment.Marks)
+                req.mark = comment.Marks[0]
 
             req.comment = comment
             req.body.ownerId = comment.userId

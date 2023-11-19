@@ -15,6 +15,9 @@ export default function getPostByComment(req, res, next) {
             }, {
                 model: models.Category,
                 as: `categories`
+            }, {
+                model: models.User,
+                as: `author`
             }],
             transaction
         })
