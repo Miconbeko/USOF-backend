@@ -20,6 +20,11 @@ export default async function (sequelize, DataTypes) {
                 len: [10, 65535],
                 notEmpty: true
             }
+        },
+        rating: {
+            type: DataTypes.BIGINT,
+            allowNull: false,
+            defaultValue: 0
         }
     })
 

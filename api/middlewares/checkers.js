@@ -9,11 +9,17 @@ import checkOwner from "./checkers/checkOwner.js";
 import checkAdmin from "./checkers/checkAdmin.js";
 import checkLocked from "./checkers/checkLocked.js";
 import checkNotLocked from "./checkers/checkNotLocked.js";
+import checkNotLiked from "./checkers/checkNotLiked.js";
+import checkNotDisliked from "./checkers/checkNotDisliked.js";
+import checkLiked from "./checkers/checkLiked.js";
+import checkDisliked from "./checkers/checkDisliked.js";
 
 
 export { checkEmailOrLoginExists, checkVerified, checkNotVerified,
     checkPassword, checkToken, checkOwner,
-    checkAdmin, checkLocked, checkNotLocked }
+    checkAdmin, checkLocked, checkNotLocked,
+    checkNotLiked, checkNotDisliked, checkLiked,
+    checkDisliked }
 
 export const checkTokenTypeVerify = createTokenTypeChecker(`verify`)
 export const checkTokenTypePswReset = createTokenTypeChecker(`pswReset`)

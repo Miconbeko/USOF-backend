@@ -40,7 +40,7 @@ function initSettiong() {
     settings.set(models.Category, [`PostCategories`])
     settings.set(models.Comment, [])
     settings.set(models.Mark, [`markableType`, `markableId`])
-    settings.set(models.Post, [`lockId`])
+    settings.set(models.Post, [`lockId`, `author`]) // TODO: add author
     settings.set(models.Token, [`uuid`, `token`, `id`])
     settings.set(models.User, [`password`, `email`])
 

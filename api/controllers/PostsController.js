@@ -4,6 +4,7 @@ import {transactionErrorHandler} from "../errors/handlers.js";
 import retryError from "../errors/RetryError.js";
 import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
+import increments from "../utils/ratingIncrements.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -65,15 +66,31 @@ class PostsController {
     }
 
     getAll = async (req, res, next) => {
+        let include =[{
+            model: models.Token,
+            as: `lock`
+        }, {
+            model: models.Category,
+            as: `categories`
+        }, {
+            model: models.User,
+            as: `author`
+        }]
+        let includeMarks = {
+            model: models.Mark,
+            limit: 1,
+            where: {
+                userId: req.user?.id,
+                markableType: `post`,
+            }
+        }
+
+        if (req.user)
+            include.push(includeMarks)
+
         sequelize.inTransaction(async transaction => {
             return await models.Post.findAndCountAll({
-                include: [{
-                    model: models.Token,
-                    as: `lock`
-                }, {
-                    model: models.Category,
-                    as: `categories`
-                }],
+                include,
                 order: [[`title`, `DESC`]],
                 offset: req.page.offset,
                 limit: req.page.limit,
@@ -195,6 +212,106 @@ class PostsController {
             })
             .catch(err => {
                 transactionErrorHandler(retryError(this.unlock, err), req, res, next)
+            })
+    }
+
+    like = async (req, res, next) => {
+        let totalIncrement = increments.like
+
+        sequelize.inTransaction(async transaction => {
+            if (req?.mark?.type === `dislike`) {
+                totalIncrement -= increments.dislike;
+                await req.mark.destroy({ transaction })
+            }
+            await req.post.increment(`rating`, { by: totalIncrement, transaction })
+            await req.post.author.increment(`rating`, { by: totalIncrement, transaction })
+
+            const like = await req.post.createMark({ type: `like` }, { transaction })
+            await like.setAuthor(req.user, { transaction })
+
+            return like
+        })
+            .then((like) => {
+                res.status(200).json({
+                    message: `Like is set`,
+                    post: req.post,
+                    like
+                })
+            })
+            .catch(err => {
+                console.log(err)
+                transactionErrorHandler(retryError(this.like, err), req, res, next)
+            })
+    }
+
+    dislike = async (req, res, next) => {
+        let totalIncrement = increments.dislike
+
+        sequelize.inTransaction(async transaction => {
+            if (req?.mark?.type === `like`) {
+                totalIncrement -= increments.like;
+                await req.mark.destroy({ transaction })
+            }
+            await req.post.increment(`rating`, { by: totalIncrement, transaction })
+            await req.post.author.increment(`rating`, { by: totalIncrement, transaction })
+
+            const dislike = await req.post.createMark({ type: `dislike` }, { transaction })
+            await dislike.setAuthor(req.user, { transaction })
+
+            return dislike
+        })
+            .then((dislike) => {
+                res.status(200).json({
+                    message: `Dislike is set`,
+                    dislike
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.dislike, err), req, res, next)
+            })
+    }
+
+    // deleteMark = async (req, res, next) => {
+    //     sequelize.inTransaction(async transaction => {
+    //         await req.mark.destroy({ transaction })
+    //     })
+    //         .then(() => {
+    //             res.status(200).json({
+    //                 message: `Mark is deleted`
+    //             })
+    //         })
+    //         .catch(err => {
+    //             transactionErrorHandler(retryError(this.deleteMark, err), req, res, next)
+    //         })
+    // }
+
+    deleteLike = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await req.mark.destroy({ transaction })
+            await req.post.increment(`rating`, { by: -increments.like, transaction })
+        })
+                .then(() => {
+                    res.status(200).json({
+                        message: `Like is deleted`
+                    })
+                })
+                .catch(err => {
+                    transactionErrorHandler(retryError(this.deleteLike, err), req, res, next)
+                })
+    }
+
+    deleteDislike = async (req, res, next) => {
+        sequelize.inTransaction(async transaction => {
+            await req.mark.destroy({ transaction })
+            await req.post.increment(`rating`, { by: -increments.dislike, transaction })
+        })
+            .then(() => {
+                res.status(200).json({
+                    message: `Dislike is deleted`
+                })
+            })
+            .catch(err => {
+                transactionErrorHandler(retryError(this.deleteDislike, err), req, res, next)
             })
     }
 }
