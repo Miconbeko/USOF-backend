@@ -31,6 +31,8 @@ export default function getCommentById(req, res, next) {
         .then(comment => {
             if (!comment)
                 return next(new ServerError(`Comment not found`, 404))
+            // if (!comment.content)
+            //     return next(new ServerError(`Comment is deleted`, 404))
 
             req.mark = null
             if (comment.Marks)

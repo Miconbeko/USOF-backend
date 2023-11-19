@@ -120,11 +120,28 @@ class PostsController {
     }
 
     getComments = async (req, res, next) => {
+        let include =[{
+            model: models.User,
+            as: `author`
+        }]
+        let includeMarks = {
+            model: models.Mark,
+            where: {
+                userId: req.user?.id,
+                markableType: `comment`,
+            },
+            required: false
+        }
+
+        if (req.user)
+            include.push(includeMarks)
+
         sequelize.inTransaction(async transaction => {
             const [count, rows] = await Promise.all([
                 req.post.countComments({ transaction }),
 
                 req.post.getComments({
+                    include,
                     offset: req.page.offset,
                     limit: req.page.limit,
                     transaction
@@ -155,7 +172,7 @@ class PostsController {
             await comment.setPost(req.post, { transaction })
 
             await req.user.increment(`rating`, { by: increments.comment, transaction })
-            await req.post.author.increment(`rating`, { by: increments.comment, transaction })
+            await req.post.author?.increment(`rating`, { by: increments.comment, transaction })
 
             return comment
         })
@@ -233,7 +250,7 @@ class PostsController {
             }
             await req.user.increment(`rating`, { by: userIncrement, transaction })
             await req.post.increment(`rating`, { by: totalIncrement, transaction })
-            await req.post.author.increment(`rating`, { by: totalIncrement, transaction })
+            await req.post.author?.increment(`rating`, { by: totalIncrement, transaction })
 
             const like = await req.post.createMark({ type: `like` }, { transaction })
             await like.setAuthor(req.user, { transaction })
@@ -266,7 +283,7 @@ class PostsController {
             }
             await req.user.increment(`rating`, { by: userIncrement, transaction })
             await req.post.increment(`rating`, { by: totalIncrement, transaction })
-            await req.post.author.increment(`rating`, { by: totalIncrement, transaction })
+            await req.post.author?.increment(`rating`, { by: totalIncrement, transaction })
 
             const dislike = await req.post.createMark({ type: `dislike` }, { transaction })
             await dislike.setAuthor(req.user, { transaction })
@@ -303,7 +320,7 @@ class PostsController {
             await req.mark.destroy({ transaction })
             await req.user.increment(`rating`, { by: -increments.mark, transaction })
             await req.post.increment(`rating`, { by: -increments.like, transaction })
-            await req.post.author.increment(`rating`, { by: -increments.like, transaction })
+            await req.post.author?.increment(`rating`, { by: -increments.like, transaction })
         })
                 .then(() => {
                     res.status(200).json({
@@ -320,7 +337,7 @@ class PostsController {
             await req.mark.destroy({ transaction })
             await req.user.increment(`rating`, { by: -increments.mark, transaction })
             await req.post.increment(`rating`, { by: -increments.dislike, transaction })
-            await req.post.author.increment(`rating`, { by: -increments.dislike, transaction })
+            await req.post.author?.increment(`rating`, { by: -increments.dislike, transaction })
         })
             .then(() => {
                 res.status(200).json({

@@ -14,6 +14,8 @@ class CommentsController{
                 content: req.body.content
             }, { transaction })
 
+            await req.user.increment(`rating`, { by: increments.comment, transaction })
+
             await comment.setAuthor(req.user, { transaction })
             await comment.setPost(req.post, { transaction })
             await comment.setComment(req.comment, { transaction })
@@ -56,7 +58,11 @@ class CommentsController{
 
     delete = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
-            await req.comment.destroy({ transaction })
+            // await req.comment.destroy({ transaction })
+            await req.comment.update({
+                userId: null,
+                content: null,
+            }, { transaction })
         })
             .then(() => {
                 res.status(200).json({
@@ -81,7 +87,7 @@ class CommentsController{
             }
             await req.user.increment(`rating`, { by: userIncrement, transaction })
             await req.comment.increment(`rating`, { by: totalIncrement, transaction })
-            await req.comment.author.increment(`rating`, { by: totalIncrement, transaction })
+            await req.comment.author?.increment(`rating`, { by: totalIncrement, transaction })
 
             const like = await req.comment.createMark({ type: `like` }, { transaction })
             await like.setAuthor(req.user, { transaction })
@@ -113,7 +119,7 @@ class CommentsController{
             }
             await req.user.increment(`rating`, { by: userIncrement, transaction })
             await req.comment.increment(`rating`, { by: totalIncrement, transaction })
-            await req.comment.author.increment(`rating`, { by: totalIncrement, transaction })
+            await req.comment.author?.increment(`rating`, { by: totalIncrement, transaction })
 
             const dislike = await req.comment.createMark({ type: `dislike` }, { transaction })
             await dislike.setAuthor(req.user, { transaction })
@@ -136,7 +142,7 @@ class CommentsController{
             await req.mark.destroy({ transaction })
             await req.user.increment(`rating`, { by: -increments.mark, transaction })
             await req.comment.increment(`rating`, { by: -increments.like, transaction })
-            await req.comment.author.increment(`rating`, { by: -increments.like, transaction })
+            await req.comment.author?.increment(`rating`, { by: -increments.like, transaction })
         })
             .then(() => {
                 res.status(200).json({
@@ -153,7 +159,7 @@ class CommentsController{
             await req.mark.destroy({ transaction })
             await req.user.increment(`rating`, { by: -increments.mark, transaction })
             await req.comment.increment(`rating`, { by: -increments.dislike, transaction })
-            await req.comment.author.increment(`rating`, { by: -increments.dislike, transaction })
+            await req.comment.author?.increment(`rating`, { by: -increments.dislike, transaction })
         })
             .then(() => {
                 res.status(200).json({

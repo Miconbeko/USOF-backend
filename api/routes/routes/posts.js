@@ -46,10 +46,10 @@ router.delete(`/:id/lock`,      paramIdValidator, tokenValidator, validationErro
 
 router.get(`/`,                 paginationValidator, validationErrorHandler, getPaginationParams, optional(getDataFromToken), optional(getUserByToken), PostsController.getAll)
 router.get(`/:id`,              paramIdValidator, validationErrorHandler, optional(getDataFromToken), optional(getUserByToken), getPostById, PostsController.getOne)
-router.get(`/:id/comments`,     paramIdValidator, paginationValidator, validationErrorHandler, getPaginationParams, getPostById, PostsController.getComments)
+router.get(`/:id/comments`,     paramIdValidator, paginationValidator, validationErrorHandler, getPaginationParams, optional(getDataFromToken), optional(getUserByToken), getPostById, PostsController.getComments)
 
 router.delete(`/:id`,           paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkOwner, PostsController.delete)
-router.delete(`/:id/like`,      paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkLiked, PostsController.deleteLike)
-router.delete(`/:id/dislike`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkDisliked, PostsController.deleteDislike)
+router.delete(`/:id/like`,      paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkLiked, checkNotLocked, PostsController.deleteLike)
+router.delete(`/:id/dislike`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getPostById, checkDisliked, checkNotLocked, PostsController.deleteDislike)
 
 export default router

@@ -19,15 +19,15 @@ const router = express.Router()
 
 
 router.post(`/:id/comment`,     paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, CommentsController.create)
-router.post(`/:id/like`,        paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkNotLiked, CommentsController.like)
-router.post(`/:id/dislike`,     paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkNotDisliked, CommentsController.dislike)
+router.post(`/:id/like`,        paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, checkNotLiked, CommentsController.like)
+router.post(`/:id/dislike`,     paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, checkNotDisliked, CommentsController.dislike)
 
 router.put(`/:id`,              paramIdValidator, commentCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.edit)
 
 router.get(`/:id`,              paramIdValidator, validationErrorHandler, optional(getDataFromToken), optional(getUserByToken), getCommentById, CommentsController.getOne)
 
 router.delete(`/:id`,           paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkOwner, getPostByComment, checkNotLocked, CommentsController.delete)
-router.delete(`/:id/like`,      paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkLiked, CommentsController.deleteLike)
-router.delete(`/:id/dislike`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, checkDisliked, CommentsController.deleteDislike)
+router.delete(`/:id/like`,      paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, checkLiked, CommentsController.deleteLike)
+router.delete(`/:id/dislike`,   paramIdValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, getCommentById, getPostByComment, checkNotLocked, checkDisliked, CommentsController.deleteDislike)
 
 export default router

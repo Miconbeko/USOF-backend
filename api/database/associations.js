@@ -82,7 +82,8 @@ export default function (sequelize) {
     function commentHasComment() {
         models.Comment.belongsTo(models.Comment, {
             foreignKey: `commentId`,
-            as: `comment`
+            as: `comment`,
+            // onDelete: `NO ACTION`
         })
     }
 
@@ -103,7 +104,7 @@ export default function (sequelize) {
         })
     }
 
-    function initMarkPolimorfic() {  // TODO: Test it
+    function initMarkPolimorfic() {
         models.Mark.addHook(`afterFind`, (findResult) => {
             if (!Array.isArray(findResult))
                 findResult = [findResult]
