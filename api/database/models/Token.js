@@ -34,7 +34,6 @@ export default async function (sequelize, DataTypes) {
 
                 return jwt.sign({
                     tokenId: this.id,
-                    redirectUrl: this.redirectUrl
                 }, process.env.JWT_KEY, options)
             }
         }

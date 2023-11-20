@@ -15,7 +15,6 @@ export default function checkMaxLoginDevices(req, res, next) {
         })
     })
         .then((count) => {
-            console.log(count)
             if (count >= maxLoginDevices)
                 return next(new ServerError(`Too many logged devices. Max: ${maxLoginDevices}`), 403)
             return next()
