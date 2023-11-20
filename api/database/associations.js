@@ -89,7 +89,8 @@ export default function (sequelize) {
 
     function postHasComments() {
         models.Post.hasMany(models.Comment, {
-            foreignKey: `postId`
+            foreignKey: `postId`,
+            onDelete: `CASCADE`
         })
         models.Comment.belongsTo(models.Post, {
             foreignKey: `postId`,

@@ -189,6 +189,13 @@ class PostsController {
 
     delete = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
+            await models.Mark.destroy({
+                where: {
+                    markableType: `post`,
+                    markableId: req.post.id
+                },
+                transaction
+            })
             await req.post.destroy({ transaction })
         })
             .then(() => {
