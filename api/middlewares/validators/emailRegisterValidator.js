@@ -3,6 +3,7 @@ import { body } from "express-validator"
 export default [
     body(`email`, `E-mail is obligatory field`)
         .exists()
+        .bail()
         .trim()
         .isEmail()
         .withMessage(`Should looks like e-mail`)

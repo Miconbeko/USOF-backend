@@ -6,6 +6,7 @@ export default (field, fieldName) => {
 
     return param(field, `${fieldName} is obligatory parameter`)
         .exists()
+        .bail()
         .trim()
         .custom((param, { req }) => {
             req.body[field] = param

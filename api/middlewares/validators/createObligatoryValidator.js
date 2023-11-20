@@ -6,6 +6,7 @@ export default (field, fieldName) => {
 
     return body(field, `${fieldName} is obligatory field`)
         .exists()
+        .bail()
         .trim()
         .notEmpty()
         .escape()
