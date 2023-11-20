@@ -28,7 +28,7 @@ class UsersController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.getAll, err), req, res, next)
+                return transactionErrorHandler(retryError(this.getAll, err), req, res, next)
             })
     }
 
@@ -83,7 +83,7 @@ class UsersController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.delete, err), req, res, next)
+                return transactionErrorHandler(retryError(this.delete, err), req, res, next)
             })
     }
 }

@@ -31,7 +31,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.create, err), req, res, next)
+                return transactionErrorHandler(retryError(this.create, err), req, res, next)
             })
     }
 
@@ -62,7 +62,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.edit, err), req, res, next)
+                return transactionErrorHandler(retryError(this.edit, err), req, res, next)
             })
     }
 
@@ -108,8 +108,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                console.log(err)
-                transactionErrorHandler(retryError(this.getAll, err), req, res, next)
+                return transactionErrorHandler(retryError(this.getAll, err), req, res, next)
             })
     }
 
@@ -159,7 +158,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.getComments, err), req, res, next)
+                return (retryError(this.getComments, err), req, res, next)
             })
     }
 
@@ -183,7 +182,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.createComment, err), req, res, next)
+                return transactionErrorHandler(retryError(this.createComment, err), req, res, next)
             })
     }
 
@@ -204,7 +203,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.delete, err), req, res, next)
+                return transactionErrorHandler(retryError(this.delete, err), req, res, next)
             })
     }
 
@@ -225,7 +224,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.lock, err), req, res, next)
+                return transactionErrorHandler(retryError(this.lock, err), req, res, next)
             })
     }
 
@@ -240,7 +239,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.unlock, err), req, res, next)
+                return transactionErrorHandler(retryError(this.unlock, err), req, res, next)
             })
     }
 
@@ -272,8 +271,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                console.log(err)
-                transactionErrorHandler(retryError(this.like, err), req, res, next)
+                return transactionErrorHandler(retryError(this.like, err), req, res, next)
             })
     }
 
@@ -304,7 +302,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.dislike, err), req, res, next)
+                return transactionErrorHandler(retryError(this.dislike, err), req, res, next)
             })
     }
 
@@ -335,7 +333,7 @@ class PostsController {
                     })
                 })
                 .catch(err => {
-                    transactionErrorHandler(retryError(this.deleteLike, err), req, res, next)
+                    return transactionErrorHandler(retryError(this.deleteLike, err), req, res, next)
                 })
     }
 
@@ -352,7 +350,7 @@ class PostsController {
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.deleteDislike, err), req, res, next)
+                return transactionErrorHandler(retryError(this.deleteDislike, err), req, res, next)
             })
     }
 }

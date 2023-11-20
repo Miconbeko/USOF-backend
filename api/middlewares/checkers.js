@@ -13,13 +13,13 @@ import checkNotLiked from "./checkers/checkNotLiked.js";
 import checkNotDisliked from "./checkers/checkNotDisliked.js";
 import checkLiked from "./checkers/checkLiked.js";
 import checkDisliked from "./checkers/checkDisliked.js";
-
+import checkMaxLoginDevices from "./checkers/checkMaxLoginDevices.js";
 
 export { checkEmailOrLoginExists, checkVerified, checkNotVerified,
     checkPassword, checkToken, checkOwner,
     checkAdmin, checkLocked, checkNotLocked,
     checkNotLiked, checkNotDisliked, checkLiked,
-    checkDisliked }
+    checkDisliked, checkMaxLoginDevices }
 
 export const checkTokenTypeVerify = createTokenTypeChecker(`verify`)
 export const checkTokenTypePswReset = createTokenTypeChecker(`pswReset`)

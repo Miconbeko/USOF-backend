@@ -9,9 +9,11 @@ import {
         loginInValidator, tokenValidator, paramTokenValidator, adminRegisterValidator
 } from "../../middlewares/validators.js";
 
-import { checkEmailOrLoginExists, checkVerified, checkNotVerified,
+import {
+        checkEmailOrLoginExists, checkVerified, checkNotVerified,
         checkPassword, checkTokenVerify, checkTokenPswReset,
-        checkTokenSession } from "../../middlewares/checkers.js";
+        checkTokenSession, checkMaxLoginDevices
+} from "../../middlewares/checkers.js";
 
 import { validationErrorHandler } from "../../errors/handlers.js"
 import checkAdmin from "../../middlewares/checkers/checkAdmin.js";
@@ -23,7 +25,7 @@ const router = express.Router()
 router.post(`/register`,                upload.singleWithHandler(`avatar`), registerValidator, validationErrorHandler, checkEmailOrLoginExists, compressImage, AuthController.register)
 router.post(`/register/admin`,          upload.singleWithHandler(`avatar`), adminRegisterValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, checkEmailOrLoginExists, compressImage, AuthController.adminRegister)
 router.post(`/verify-resend`,           loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkNotVerified, AuthController.sendVerifyToken)
-router.post(`/login`,                   loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, AuthController.login)
+router.post(`/login`,                   loginInValidator, validationErrorHandler, getUserByLogin, checkPassword, checkVerified, checkMaxLoginDevices, AuthController.login)
 router.post(`/password-reset`,          loginOrEmailValidator, validationErrorHandler, getUserByLogin, checkVerified, AuthController.sendPswResetToken)
 
 router.patch(`/verify/:token`,          paramTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenVerify, checkNotVerified, AuthController.verifyEmail)

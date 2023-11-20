@@ -26,7 +26,7 @@ class CategoriesController{
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.getAll, err), req, res, next)
+                return transactionErrorHandler(retryError(this.getAll, err), req, res, next)
             })
     }
 
@@ -56,7 +56,7 @@ class CategoriesController{
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.create, err), req, res, next)
+                return transactionErrorHandler(retryError(this.create, err), req, res, next)
             })
     }
 
@@ -74,7 +74,7 @@ class CategoriesController{
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.edit, err), req, res, next)
+                return transactionErrorHandler(retryError(this.edit, err), req, res, next)
             })
     }
 
@@ -88,7 +88,7 @@ class CategoriesController{
                 })
             })
             .catch(err => {
-                transactionErrorHandler(retryError(this.delete, err), req, res, next)
+                return transactionErrorHandler(retryError(this.delete, err), req, res, next)
             })
     }
 }
