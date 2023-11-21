@@ -5,6 +5,7 @@ import getPaginationData from "../utils/getPaginationData.js";
 import upload from "../middlewares/imageUploader.js";
 import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
+import {sendDeletionLink} from "../utils/mailer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models;
@@ -63,7 +64,9 @@ class UsersController {
             return await createToken('delete', req.body.redirectUrl, req.user, transaction)
         })
             .then(token => {
-                res.status(200).json({
+                sendDeletionLink(token.redirectUrl, req.user.email)
+
+                return res.status(200).json({
                     message: `Deletion link is sent`,
                     token: token.token
                 })
@@ -78,7 +81,7 @@ class UsersController {
             await req.user.destroy({ transaction })
         })
             .then(() => {
-                res.status(200).json({
+                return res.status(200).json({
                     message: "Account is deleted"
                 })
             })

@@ -4,6 +4,7 @@ import retryError from "../errors/RetryError.js";
 import { transactionErrorHandler } from "../errors/handlers.js";
 import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
+import sendEmail, {sendPswResetLink, sendVerifyLink} from "../utils/mailer.js";
 
 const Op = sequelize.Sequelize.Op
 const models = sequelize.models
@@ -25,6 +26,8 @@ class AuthController {
             return { user, token }
         })
             .then(result => {
+                sendVerifyLink(result.token.redirectUrl, result.user.email)
+
                 return res.status(201).json({
                     message: `Registration complete`,
                     user: sanitize(result.user),
@@ -34,8 +37,6 @@ class AuthController {
             .catch(err => {
                 return transactionErrorHandler(retryError(this.register, err), req, res, next)
             })
-
-        // TODO: replace `:token` witn the generated token to form url for e-mail verifiaction. Then send it to user e-mail
     }
 
     adminRegister = async (req, res, next) => {
@@ -77,7 +78,7 @@ class AuthController {
             ])
         })
             .then(() => {
-                res.status(200).json({
+                return res.status(200).json({
                     message: `E-mail is verified`
                 })
             })
@@ -99,6 +100,8 @@ class AuthController {
             return await createToken(`verify`, req.body.redirectUrl, req.user, transaction)
         })
             .then(token => {
+                sendVerifyLink(token.redirectUrl, req.user.email)
+
                 return res.status(200).json({
                     message: `Validation link is sent`,
                     token: token.token
@@ -124,6 +127,8 @@ class AuthController {
             return await createToken(`pswReset`, req.body.redirectUrl, req.user, transaction)
         })
             .then(token => {
+                sendPswResetLink(token.redirectUrl, req.user.email)
+
                 return res.status(200).json({
                     message: `Password reset link is sent`,
                     token: token.token
