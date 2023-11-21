@@ -13,7 +13,7 @@ class UsersController {
     getAll = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
             return await models.User.findAndCountAll({
-                order: [[`login`, `DESC`]],
+                order: req.order,
                 offset: req.page.offset,
                 limit: req.page.limit,
                 transaction

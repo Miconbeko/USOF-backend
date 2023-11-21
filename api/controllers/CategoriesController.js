@@ -11,7 +11,7 @@ class CategoriesController{
     getAll = async (req, res, next) => {
         sequelize.inTransaction(async transaction => {
             return await models.Category.findAndCountAll({
-                order: [[`title`, `DESC`]],
+                order: req.order,
                 offset: req.page.offset,
                 limit: req.page.limit,
                 transaction

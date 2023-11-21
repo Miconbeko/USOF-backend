@@ -1,12 +1,17 @@
 import express from "express"
 import UsersController from "../../controllers/UsersController.js";
 
-import {getDataFromToken, getPaginationParams, getUserByLogin, getUserByToken} from "../../middlewares/getters.js";
+import {
+    getDataFromToken,
+    getPaginationParams, getSortRules,
+    getUserByLogin,
+    getUserByToken,
+} from "../../middlewares/getters.js";
 
 import {
     fullNameRegisterValidator,
     paginationValidator,
-    paramLoginValidator, paramTokenValidator,
+    paramLoginValidator, paramTokenValidator, querySortValidator,
     tokenValidator
 } from "../../middlewares/validators.js";
 
@@ -22,7 +27,7 @@ router.post(`/delete`,          tokenValidator, validationErrorHandler, getDataF
 
 router.patch(`/`,               upload.singleWithHandler(`avatar`), fullNameRegisterValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, compressImage, UsersController.changeInfo)
 
-router.get('/',                 paginationValidator, validationErrorHandler, getPaginationParams, UsersController.getAll)
+router.get('/',                 paginationValidator, querySortValidator, validationErrorHandler, getPaginationParams, getSortRules(`users`), UsersController.getAll)
 router.get(`/:login`,           paramLoginValidator, validationErrorHandler, getUserByLogin, UsersController.getOne)
 
 router.delete(`/delete/:token`, paramTokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenDelete, UsersController.delete)

@@ -2,11 +2,17 @@ import express from "express"
 import {
     categoryCreationValidator,
     paginationValidator,
-    paramIdValidator, postCategoriesValidator,
+    paramIdValidator, postCategoriesValidator, querySortValidator,
     tokenValidator
 } from "../../middlewares/validators.js";
 import {validationErrorHandler} from "../../errors/handlers.js";
-import {getCategoryById, getDataFromToken, getPaginationParams, getUserByToken} from "../../middlewares/getters.js";
+import {
+    getCategoryById,
+    getDataFromToken,
+    getPaginationParams,
+    getSortRules,
+    getUserByToken
+} from "../../middlewares/getters.js";
 import CategoriesController from "../../controllers/CategoriesController.js";
 import checkAdmin from "../../middlewares/checkers/checkAdmin.js";
 import {checkTokenSession} from "../../middlewares/checkers.js";
@@ -20,7 +26,7 @@ router.post(`/`,        categoryCreationValidator, tokenValidator, validationErr
 
 router.put(`/:id`,      paramIdValidator, categoryCreationValidator, tokenValidator, validationErrorHandler, getDataFromToken, getUserByToken, checkTokenSession, checkAdmin, getCategoryById, CategoriesController.edit)
 
-router.get(`/`,         paginationValidator, validationErrorHandler, getPaginationParams, CategoriesController.getAll)
+router.get(`/`,         paginationValidator, querySortValidator, validationErrorHandler, getPaginationParams, getSortRules(`categories`), CategoriesController.getAll)
 router.get(`/array`,    postCategoriesValidator, validationErrorHandler, getCategoriesByIds, CategoriesController.getArray)
 
 router.get(`/:id`,      paramIdValidator, validationErrorHandler, getCategoryById, CategoriesController.getOne)

@@ -90,10 +90,9 @@ class PostsController {
             include.push(includeMarks)
 
         sequelize.inTransaction(async transaction => {
-            console.log(include)
             return await models.Post.findAndCountAll({
                 include,
-                order: [[`title`, `DESC`]],
+                order: req.order,
                 offset: req.page.offset,
                 limit: req.page.limit,
                 transaction
@@ -141,6 +140,7 @@ class PostsController {
 
                 req.post.getComments({
                     include,
+                    order: req.order,
                     offset: req.page.offset,
                     limit: req.page.limit,
                     transaction
