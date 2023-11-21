@@ -30,7 +30,7 @@ export default function getSortRules(rulesName) {
                     const rule = rules[rulesName][param]
 
                     if (!rule)
-                        return next(new ServerError(`Sort rule "${param}" can't be applied to "${rulesName}"`, 500))
+                        return next(new ServerError(`Sort rule "${param}" can't be applied to "${rulesName}"`, 400))
 
                     order.push([ rule, sortOrder ])
                 }

@@ -15,13 +15,14 @@ import categoryTitleCreationValidator from "./validators/categoryTitleCreationVa
 import postCategoriesValidator from "./validators/postCategoriesValidator.js";
 import timerValidator from "./validators/timerValidator.js";
 import querySortValidator from "./validators/querySortValidator.js";
+import queryFilterValidator from "./validators/queryFilterValidator.js";
 
 
 export { passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator,
     loginOrEmailValidator, paginationValidator, roleRegisterValidator,
     fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator,
     categoryContentCreationValidator, categoryTitleCreationValidator, postCategoriesValidator,
-    timerValidator, querySortValidator}
+    timerValidator, querySortValidator, queryFilterValidator}
 
 export const passwordValidator = createObligatoryValidator(`password`)
 export const tokenValidator = createObligatoryValidator(`token`)
