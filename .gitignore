@@ -4,3 +4,4 @@ node_modules
 uploads/*
 dumps/*
 .env
+.prettierrc

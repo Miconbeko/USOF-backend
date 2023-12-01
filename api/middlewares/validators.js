@@ -1,11 +1,11 @@
-import createObligatoryValidator from "./validators/createObligatoryValidator.js"
-import createParamObligatoryValidator from "./validators/createParamObligatoryValidator.js"
+import createObligatoryValidator from "./validators/createObligatoryValidator.js";
+import createParamObligatoryValidator from "./validators/createParamObligatoryValidator.js";
 
-import passwordRegisterValidator from "./validators/passwordRegisterValidator.js"
-import loginRegisterValidator from "./validators/loginRegisterValidator.js"
-import emailRegisterValidator from "./validators/emailRegisterValidator.js"
-import loginOrEmailValidator from "./validators/loginOrEmailValidator.js"
-import paginationValidator from "./validators/paginationValidator.js"
+import passwordRegisterValidator from "./validators/passwordRegisterValidator.js";
+import loginRegisterValidator from "./validators/loginRegisterValidator.js";
+import emailRegisterValidator from "./validators/emailRegisterValidator.js";
+import loginOrEmailValidator from "./validators/loginOrEmailValidator.js";
+import paginationValidator from "./validators/paginationValidator.js";
 import roleRegisterValidator from "./validators/roleRegisterValidator.js";
 import fullNameRegisterValidator from "./validators/fullNameRegisterValidator.js";
 import postTitleCreationValidator from "./validators/postTitleCreationValidator.js";
@@ -16,24 +16,52 @@ import postCategoriesValidator from "./validators/postCategoriesValidator.js";
 import timerValidator from "./validators/timerValidator.js";
 import querySortValidator from "./validators/querySortValidator.js";
 import queryFilterValidator from "./validators/queryFilterValidator.js";
+import arrayLoginsValidator from "./validators/arrayLoginsValidator.js";
 
+export {
+  passwordRegisterValidator,
+  loginRegisterValidator,
+  emailRegisterValidator,
+  loginOrEmailValidator,
+  paginationValidator,
+  roleRegisterValidator,
+  fullNameRegisterValidator,
+  postTitleCreationValidator,
+  postContentCreationValidator,
+  categoryContentCreationValidator,
+  categoryTitleCreationValidator,
+  postCategoriesValidator,
+  timerValidator,
+  querySortValidator,
+  queryFilterValidator,
+  arrayLoginsValidator,
+};
 
-export { passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator,
-    loginOrEmailValidator, paginationValidator, roleRegisterValidator,
-    fullNameRegisterValidator, postTitleCreationValidator, postContentCreationValidator,
-    categoryContentCreationValidator, categoryTitleCreationValidator, postCategoriesValidator,
-    timerValidator, querySortValidator, queryFilterValidator}
+export const passwordValidator = createObligatoryValidator(`password`);
+export const tokenValidator = createObligatoryValidator(`token`);
 
-export const passwordValidator = createObligatoryValidator(`password`)
-export const tokenValidator = createObligatoryValidator(`token`)
+export const paramTokenValidator = createParamObligatoryValidator(`token`);
+export const paramLoginValidator = createParamObligatoryValidator(`login`);
+export const paramIdValidator = createParamObligatoryValidator(`id`);
 
-export const paramTokenValidator = createParamObligatoryValidator(`token`)
-export const paramLoginValidator = createParamObligatoryValidator(`login`)
-export const paramIdValidator = createParamObligatoryValidator(`id`)
-
-export const registerValidator = [passwordRegisterValidator, loginRegisterValidator, emailRegisterValidator, fullNameRegisterValidator]
-export const adminRegisterValidator = [registerValidator, roleRegisterValidator]
-export const loginInValidator = [loginOrEmailValidator, passwordValidator]
-export const postCreationValidator = [postTitleCreationValidator, postContentCreationValidator, postCategoriesValidator]
-export const commentCreationValidator = [postContentCreationValidator]
-export const categoryCreationValidator = [categoryTitleCreationValidator, categoryContentCreationValidator]
+export const registerValidator = [
+  passwordRegisterValidator,
+  loginRegisterValidator,
+  emailRegisterValidator,
+  fullNameRegisterValidator,
+];
+export const adminRegisterValidator = [
+  registerValidator,
+  roleRegisterValidator,
+];
+export const loginInValidator = [loginOrEmailValidator, passwordValidator];
+export const postCreationValidator = [
+  postTitleCreationValidator,
+  postContentCreationValidator,
+  postCategoriesValidator,
+];
+export const commentCreationValidator = [postContentCreationValidator];
+export const categoryCreationValidator = [
+  categoryTitleCreationValidator,
+  categoryContentCreationValidator,
+];
