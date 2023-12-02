@@ -16,25 +16,27 @@ import postCategoriesValidator from "./validators/postCategoriesValidator.js";
 import timerValidator from "./validators/timerValidator.js";
 import querySortValidator from "./validators/querySortValidator.js";
 import queryFilterValidator from "./validators/queryFilterValidator.js";
-import arrayLoginsValidator from "./validators/arrayLoginsValidator.js";
+import queryLoginsValidator from "./validators/queryLoginsValidator.js";
+import queryIdsValidator from "./validators/queryIdsValidator.js";
 
 export {
-  passwordRegisterValidator,
-  loginRegisterValidator,
-  emailRegisterValidator,
-  loginOrEmailValidator,
-  paginationValidator,
-  roleRegisterValidator,
-  fullNameRegisterValidator,
-  postTitleCreationValidator,
-  postContentCreationValidator,
-  categoryContentCreationValidator,
-  categoryTitleCreationValidator,
-  postCategoriesValidator,
-  timerValidator,
-  querySortValidator,
-  queryFilterValidator,
-  arrayLoginsValidator,
+	passwordRegisterValidator,
+	loginRegisterValidator,
+	emailRegisterValidator,
+	loginOrEmailValidator,
+	paginationValidator,
+	roleRegisterValidator,
+	fullNameRegisterValidator,
+	postTitleCreationValidator,
+	postContentCreationValidator,
+	categoryContentCreationValidator,
+	categoryTitleCreationValidator,
+	postCategoriesValidator,
+	timerValidator,
+	querySortValidator,
+	queryFilterValidator,
+	queryLoginsValidator,
+	queryIdsValidator,
 };
 
 export const passwordValidator = createObligatoryValidator(`password`);
@@ -45,23 +47,23 @@ export const paramLoginValidator = createParamObligatoryValidator(`login`);
 export const paramIdValidator = createParamObligatoryValidator(`id`);
 
 export const registerValidator = [
-  passwordRegisterValidator,
-  loginRegisterValidator,
-  emailRegisterValidator,
-  fullNameRegisterValidator,
+	passwordRegisterValidator,
+	loginRegisterValidator,
+	emailRegisterValidator,
+	fullNameRegisterValidator,
 ];
 export const adminRegisterValidator = [
-  registerValidator,
-  roleRegisterValidator,
+	registerValidator,
+	roleRegisterValidator,
 ];
 export const loginInValidator = [loginOrEmailValidator, passwordValidator];
 export const postCreationValidator = [
-  postTitleCreationValidator,
-  postContentCreationValidator,
-  postCategoriesValidator,
+	postTitleCreationValidator,
+	postContentCreationValidator,
+	postCategoriesValidator,
 ];
 export const commentCreationValidator = [postContentCreationValidator];
 export const categoryCreationValidator = [
-  categoryTitleCreationValidator,
-  categoryContentCreationValidator,
+	categoryTitleCreationValidator,
+	categoryContentCreationValidator,
 ];

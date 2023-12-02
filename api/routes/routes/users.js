@@ -5,8 +5,10 @@ import {
 	getDataFromToken,
 	getPaginationParams,
 	getSortRules,
+	getUserById,
 	getUserByLogin,
 	getUserByToken,
+	getUsersByIds,
 	getUsersByLogins,
 } from "../../middlewares/getters.js";
 
@@ -17,7 +19,9 @@ import {
 	paramTokenValidator,
 	querySortValidator,
 	tokenValidator,
-	arrayLoginsValidator,
+	queryLoginsValidator,
+	queryIdsValidator,
+	paramIdValidator,
 } from "../../middlewares/validators.js";
 
 import { validationErrorHandler } from "../../errors/handlers.js";
@@ -62,17 +66,31 @@ router.get(
 	UsersController.getAll,
 );
 router.get(
-	`/array`,
-	arrayLoginsValidator,
+	`/logins`,
+	queryLoginsValidator,
 	validationErrorHandler,
 	getUsersByLogins,
 	UsersController.getArray,
 );
 router.get(
-	`/:login`,
+	`/login/:login`,
 	paramLoginValidator,
 	validationErrorHandler,
 	getUserByLogin,
+	UsersController.getOne,
+);
+router.get(
+	`/ids`,
+	queryIdsValidator,
+	validationErrorHandler,
+	getUsersByIds,
+	UsersController.getArray,
+);
+router.get(
+	`/id/:id`,
+	paramIdValidator,
+	validationErrorHandler,
+	getUserById,
 	UsersController.getOne,
 );
 

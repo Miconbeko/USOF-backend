@@ -6,22 +6,10 @@ import retryError from "../../errors/RetryError.js";
 const Op = sequelize.Sequelize.Op;
 const models = sequelize.models;
 
-export default function getUserByLogin(req, res, next) {
+export default function getUserById(req, res, next) {
 	sequelize
 		.inTransaction(async (transaction) => {
-			return await models.User.findOne({
-				where: {
-					[Op.or]: [
-						{
-							login: req.body.login ?? null,
-						},
-						{
-							email: req.body.email ?? null,
-						},
-					],
-				},
-				transaction,
-			});
+			return await models.User.findByPk(req.body.id, { transaction });
 		})
 		.then((user) => {
 			if (!user) return next(new ServerError(`User not found`, 404));
@@ -31,7 +19,7 @@ export default function getUserByLogin(req, res, next) {
 		})
 		.catch((err) => {
 			return transactionErrorHandler(
-				retryError(getUserByLogin, err),
+				retryError(getUserById, err),
 				req,
 				res,
 				next,

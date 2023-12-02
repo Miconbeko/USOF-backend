@@ -9,3 +9,5 @@ export { default as getCategoryById } from "./getters/getCategoryById.js";
 export { default as getCategoriesByIds } from "./getters/getCategoriesByIds.js";
 export { default as getSortRules } from "./getters/getSortRules.js";
 export { default as getUsersByLogins } from "./getters/getUsersByLogins.js";
+export { default as getUsersByIds } from "./getters/getUsersByIds.js";
+export { default as getUserById } from "./getters/getUserById.js";
