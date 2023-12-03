@@ -1,3 +1,5 @@
+import { header } from "express-validator";
+
 import createObligatoryValidator from "./validators/createObligatoryValidator.js";
 import createParamObligatoryValidator from "./validators/createParamObligatoryValidator.js";
 
@@ -40,7 +42,7 @@ export {
 };
 
 export const passwordValidator = createObligatoryValidator(`password`);
-export const tokenValidator = createObligatoryValidator(`token`);
+export const tokenValidator = createObligatoryValidator(`token`, null, header);
 
 export const paramTokenValidator = createParamObligatoryValidator(`token`);
 export const paramLoginValidator = createParamObligatoryValidator(`login`);
