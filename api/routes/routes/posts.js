@@ -120,19 +120,6 @@ router.patch(
 	getPostById,
 	PostsController.lock,
 );
-router.delete(
-	`/:id/lock`,
-	paramIdValidator,
-	tokenValidator,
-	validationErrorHandler,
-	getDataFromToken,
-	getUserByToken,
-	checkTokenSession,
-	checkAdmin,
-	getPostById,
-	checkLocked,
-	PostsController.unlock,
-);
 
 router.get(
 	`/`,
@@ -206,6 +193,19 @@ router.delete(
 	checkDisliked,
 	checkNotLocked,
 	PostsController.deleteDislike,
+);
+router.delete(
+	`/:id/lock`,
+	paramIdValidator,
+	tokenValidator,
+	validationErrorHandler,
+	getDataFromToken,
+	getUserByToken,
+	checkTokenSession,
+	checkAdmin,
+	getPostById,
+	checkLocked,
+	PostsController.unlock,
 );
 
 export default router;

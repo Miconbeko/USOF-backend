@@ -57,13 +57,22 @@ router.patch(
 );
 
 router.get(
-	"/",
+	`/`,
 	paginationValidator,
 	querySortValidator,
 	validationErrorHandler,
 	getPaginationParams,
 	getSortRules(`users`),
 	UsersController.getAll,
+);
+router.get(
+	`/token`,
+	tokenValidator,
+	validationErrorHandler,
+	getDataFromToken,
+	getUserByToken,
+	checkTokenSession,
+	UsersController.getOne,
 );
 router.get(
 	`/logins`,
