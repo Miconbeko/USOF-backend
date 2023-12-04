@@ -90,6 +90,19 @@ router.post(
 	checkNotDisliked,
 	PostsController.dislike,
 );
+router.post(
+	`/:id/lock`,
+	paramIdValidator,
+	timerValidator,
+	tokenValidator,
+	validationErrorHandler,
+	getDataFromToken,
+	getUserByToken,
+	checkTokenSession,
+	checkAdmin,
+	getPostById,
+	PostsController.lock,
+);
 
 router.put(
 	`/:id`,
@@ -105,20 +118,6 @@ router.put(
 	checkNotLocked,
 	getCategoriesByIds,
 	PostsController.edit,
-);
-
-router.patch(
-	`/:id/lock`,
-	paramIdValidator,
-	timerValidator,
-	tokenValidator,
-	validationErrorHandler,
-	getDataFromToken,
-	getUserByToken,
-	checkTokenSession,
-	checkAdmin,
-	getPostById,
-	PostsController.lock,
 );
 
 router.get(
