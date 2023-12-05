@@ -37,6 +37,10 @@ export default function getFilterRules(rulesName) {
 							rule.where.login[Op.regexp] =
 								req.body.filter[param].soft.toString();
 						}
+						if (rulesName === `categories`) {
+							rule.where.title[Op.regexp] =
+								req.body.filter[param].soft.toString();
+						}
 						console.log(rule.where);
 					}
 
@@ -58,6 +62,15 @@ function initRules() {
 	if (rules) return;
 
 	rules = {
+		categories: {
+			search: {
+				where: {
+					title: {
+						[Op.regexp]: null,
+					},
+				},
+			},
+		},
 		users: {
 			admins: {
 				where: {
