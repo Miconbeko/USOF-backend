@@ -1,5 +1,6 @@
 import { query } from "express-validator";
 import splitQuery from "../../utils/splitQuery.js";
+import splitQueryParams from "../../utils/splitQueryParams.js";
 
 const avaliableParams = [`rating`, `name`, `date`];
 
@@ -9,7 +10,8 @@ const queryArrToSortParams = async (queryArr, { req }) => {
 	if (!queryArr) return true;
 
 	queryArr.forEach((fullParam) => {
-		const [param, order] = fullParam?.split(`:`);
+		const [param, order] = splitQueryParams(fullParam);
+		console.log([param, order]);
 
 		if (avaliableParams.indexOf(param) === -1)
 			throw new Error(

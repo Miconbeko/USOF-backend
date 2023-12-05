@@ -129,10 +129,10 @@ class PostsController {
 
 		sequelize
 			.inTransaction(async (transaction) => {
-				const regex = textToRegex.strict(
-					"Where, is! my... mind? Where is my mind Where is my mind",
-				);
-				console.log(regex);
+				// const regex = textToRegex.strict(
+				// 	"Where, is! my... mind? Where is my mind Where is my mind",
+				// );
+				// console.log(regex);
 
 				return await models.Post.findAndCountAll({
 					include,

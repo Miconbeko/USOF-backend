@@ -14,7 +14,7 @@ export default function getFilterRules(rulesName) {
 			const settings = {};
 
 			if (req.body.filter)
-				for (const param of req.body.filter) {
+				for (const param of Object.keys(req.body.filter)) {
 					const rule = rules[rulesName][param];
 
 					if (!rule)
@@ -24,7 +24,8 @@ export default function getFilterRules(rulesName) {
 								400,
 							),
 						);
-					if (param === `categories`) rule.where.id = req.body.ids;
+					if (param === `categories`)
+						rule.where.id = req.body.filter[param];
 
 					settings[param] = rule;
 				}
