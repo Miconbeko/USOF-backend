@@ -6,7 +6,7 @@ import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
 import increments from "../utils/ratingIncrements.js";
 import { literal } from "sequelize";
-import textToRegex from "../utils/searchTextToRegex.js";
+import textToMySqlRegex from "../utils/textToMySqlRegex.js";
 
 const Op = sequelize.Sequelize.Op;
 const Sequelize = sequelize.Sequelize;
@@ -121,15 +121,18 @@ class PostsController {
 
 		if (req.filterSettings.nocomments) {
 			include.push(req.filterSettings.nocomments.include);
-			where = req.filterSettings.nocomments.where;
+			where = { ...req.filterSettings.nocomments.where, ...where };
 		}
 
 		if (req.filterSettings.categories)
-			include.push(req.filterSettings.categories);
+			include.push(req.filterSettings.categories.include);
+
+		if (req.filterSettings.search)
+			where = { ...req.filterSettings.search.where, ...where };
 
 		sequelize
 			.inTransaction(async (transaction) => {
-				// const regex = textToRegex.strict(
+				// const regex = textToMySqlRegex.strict(
 				// 	"Where, is! my... mind? Where is my mind Where is my mind",
 				// );
 				// console.log(regex);
@@ -140,11 +143,7 @@ class PostsController {
 					order: req.order,
 					offset: req.page.offset,
 					limit: req.page.limit,
-					// where: {
-					// 	title: {
-					// 		[Op.regexp]: ``,
-					// 	},
-					// },
+					where,
 					transaction,
 				});
 			})

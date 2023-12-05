@@ -25,7 +25,14 @@ export default function getFilterRules(rulesName) {
 							),
 						);
 					if (param === `categories`)
-						rule.where.id = req.body.filter[param];
+						rule.include.where.id = req.body.filter[param];
+					if (param === `search`) {
+						rule.where[Op.or][0].title[Op.regexp] =
+							req.body.filter[param].soft.toString();
+						rule.where[Op.or][1].content[Op.regexp] =
+							req.body.filter[param].soft.toString();
+						console.log(rule.where);
+					}
 
 					settings[param] = rule;
 				}
@@ -33,8 +40,9 @@ export default function getFilterRules(rulesName) {
 			req.filterSettings = settings;
 			next();
 		} catch (err) {
+			console.error(err);
 			return next(
-				new ServerError(`${rulesName} sort rules went wrong`, 500),
+				new ServerError(`${rulesName} filter rules went wrong`, 500),
 			);
 		}
 	};
@@ -67,24 +75,32 @@ function initRules() {
 				where: {
 					"$Comments.id$": null,
 				},
-				// where: {
-				// 	id: {
-				// 		[Op.lt]: 0,
-				// 	},
-				// },
-				// where: {
-				// 	id: {
-				// 		[Op.is]: null,
-				// 	},
-				// },
 			},
 			categories: {
-				model: models.Category,
-				as: `categories`,
-				where: {
-					id: [],
+				include: {
+					model: models.Category,
+					as: `categories`,
+					where: {
+						id: [],
+					},
+					required: true,
 				},
-				required: true,
+			},
+			search: {
+				where: {
+					[Op.or]: [
+						{
+							title: {
+								[Op.regexp]: null,
+							},
+						},
+						{
+							content: {
+								[Op.regexp]: null,
+							},
+						},
+					],
+				},
 			},
 		},
 	};

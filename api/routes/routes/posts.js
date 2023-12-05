@@ -128,7 +128,6 @@ router.get(
 	paginationValidator,
 	querySortValidator,
 	queryFilterValidator,
-	// queryIdsOptionalValidator,
 	validationErrorHandler,
 	getPaginationParams,
 	optional(getDataFromToken),

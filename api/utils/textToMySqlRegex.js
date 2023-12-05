@@ -13,20 +13,19 @@ function toWords(text) {
 
 function textToRegexStrict(text) {
 	const words = toWords(text);
-	const lookaheads = words.map((word) => `(?=.*\\b${word}\\b)`);
 
-	return new RegExp(lookaheads.join(``), `i`);
+	return `(.*` + words.join(`.*`) + `.*)`;
 }
 
 function textToRegexSoft(text) {
 	const words = toWords(text);
 
-	return new RegExp(`\\b(?:${words.join(`|`)})\\b`, `i`);
+	return `(` + words.join(`|`) + `)`;
 }
 
-const textToRegex = {
+const textToMySqlRegex = {
 	strict: textToRegexStrict,
 	soft: textToRegexSoft,
 };
 
-export default textToRegex;
+export default textToMySqlRegex;
