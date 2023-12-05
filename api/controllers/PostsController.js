@@ -6,6 +6,7 @@ import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
 import increments from "../utils/ratingIncrements.js";
 import { literal } from "sequelize";
+import textToRegex from "../utils/searchTextToRegex.js";
 
 const Op = sequelize.Sequelize.Op;
 const Sequelize = sequelize.Sequelize;
@@ -128,13 +129,22 @@ class PostsController {
 
 		sequelize
 			.inTransaction(async (transaction) => {
+				const regex = textToRegex.strict(
+					"Where, is! my... mind? Where is my mind Where is my mind",
+				);
+				console.log(regex);
+
 				return await models.Post.findAndCountAll({
 					include,
 					subQuery: false,
 					order: req.order,
 					offset: req.page.offset,
 					limit: req.page.limit,
-					where,
+					// where: {
+					// 	title: {
+					// 		[Op.regexp]: ``,
+					// 	},
+					// },
 					transaction,
 				});
 			})
