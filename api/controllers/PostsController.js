@@ -5,8 +5,10 @@ import retryError from "../errors/RetryError.js";
 import createToken from "../utils/createToken.js";
 import sanitize from "../utils/modelSanitizer.js";
 import increments from "../utils/ratingIncrements.js";
+import { literal } from "sequelize";
 
 const Op = sequelize.Sequelize.Op;
+const Sequelize = sequelize.Sequelize;
 const models = sequelize.models;
 
 class PostsController {
@@ -102,24 +104,37 @@ class PostsController {
 				as: `author`,
 			},
 		];
+
+		let where;
+
 		let includeMarks = {
 			model: models.Mark,
+			required: false,
 			where: {
 				userId: req.user?.id,
 				markableType: `post`,
 			},
-			required: false,
 		};
 
 		if (req.user) include.push(includeMarks);
+
+		if (req.filterSettings.nocomments) {
+			include.push(req.filterSettings.nocomments.include);
+			where = req.filterSettings.nocomments.where;
+		}
+
+		if (req.filterSettings.categories)
+			include.push(req.filterSettings.categories);
 
 		sequelize
 			.inTransaction(async (transaction) => {
 				return await models.Post.findAndCountAll({
 					include,
+					subQuery: false,
 					order: req.order,
 					offset: req.page.offset,
 					limit: req.page.limit,
+					where,
 					transaction,
 				});
 			})
@@ -136,6 +151,7 @@ class PostsController {
 				});
 			})
 			.catch((err) => {
+				console.error(err);
 				return transactionErrorHandler(
 					retryError(this.getAll, err),
 					req,

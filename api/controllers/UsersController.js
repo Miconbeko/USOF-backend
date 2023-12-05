@@ -12,12 +12,18 @@ const models = sequelize.models;
 
 class UsersController {
 	getAll = async (req, res, next) => {
+		let where;
+
+		if (req.filterSettings.admins) where = req.filterSettings.admins.where;
+		if (req.filterSettings.users) where = req.filterSettings.users.where;
+
 		sequelize
 			.inTransaction(async (transaction) => {
 				return await models.User.findAndCountAll({
 					order: req.order,
 					offset: req.page.offset,
 					limit: req.page.limit,
+					where,
 					transaction,
 				});
 			})

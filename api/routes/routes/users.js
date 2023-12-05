@@ -3,6 +3,7 @@ import UsersController from "../../controllers/UsersController.js";
 
 import {
 	getDataFromToken,
+	getFilterRules,
 	getPaginationParams,
 	getSortRules,
 	getUserById,
@@ -22,6 +23,7 @@ import {
 	queryLoginsValidator,
 	queryIdsValidator,
 	paramIdValidator,
+	queryFilterValidator,
 } from "../../middlewares/validators.js";
 
 import { validationErrorHandler } from "../../errors/handlers.js";
@@ -60,9 +62,11 @@ router.get(
 	`/`,
 	paginationValidator,
 	querySortValidator,
+	queryFilterValidator,
 	validationErrorHandler,
 	getPaginationParams,
 	getSortRules(`users`),
+	getFilterRules(`users`),
 	UsersController.getAll,
 );
 router.get(

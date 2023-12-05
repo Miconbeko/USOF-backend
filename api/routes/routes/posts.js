@@ -6,6 +6,8 @@ import {
 	paramIdValidator,
 	postCreationValidator,
 	queryFilterValidator,
+	queryIdsOptionalValidator,
+	queryIdsValidator,
 	querySortValidator,
 	timerValidator,
 	tokenValidator,
@@ -20,6 +22,7 @@ import {
 	getUserByToken,
 	getCategoriesByIds,
 	getSortRules,
+	getFilterRules,
 } from "../../middlewares/getters.js";
 
 import {
@@ -125,11 +128,13 @@ router.get(
 	paginationValidator,
 	querySortValidator,
 	queryFilterValidator,
+	queryIdsOptionalValidator,
 	validationErrorHandler,
 	getPaginationParams,
 	optional(getDataFromToken),
 	optional(getUserByToken),
 	getSortRules(`posts`),
+	getFilterRules(`posts`),
 	PostsController.getAll,
 );
 router.get(

@@ -20,6 +20,7 @@ import querySortValidator from "./validators/querySortValidator.js";
 import queryFilterValidator from "./validators/queryFilterValidator.js";
 import queryLoginsValidator from "./validators/queryLoginsValidator.js";
 import queryIdsValidator from "./validators/queryIdsValidator.js";
+import queryIdsOptionalValidator from "./validators/queryIdsOptionalValidator.js";
 
 export {
 	passwordRegisterValidator,
@@ -39,6 +40,7 @@ export {
 	queryFilterValidator,
 	queryLoginsValidator,
 	queryIdsValidator,
+	queryIdsOptionalValidator,
 };
 
 export const passwordValidator = createObligatoryValidator(`password`);

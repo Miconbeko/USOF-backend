@@ -41,7 +41,7 @@ function initSettiong() {
 		`createdAt`,
 		`updatedAt`,
 	]);
-	settings.set(models.Post, [`lockId`, `author`]);
+	settings.set(models.Post, [`lockId`, `author`, `Comments`]);
 	settings.set(models.Token, [`uuid`, `token`, `id`]);
 	settings.set(models.User, [`password`, `email`]);
 }
