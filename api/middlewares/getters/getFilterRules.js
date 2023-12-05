@@ -27,10 +27,16 @@ export default function getFilterRules(rulesName) {
 					if (param === `categories`)
 						rule.include.where.id = req.body.filter[param];
 					if (param === `search`) {
-						rule.where[Op.or][0].title[Op.regexp] =
-							req.body.filter[param].soft.toString();
-						rule.where[Op.or][1].content[Op.regexp] =
-							req.body.filter[param].soft.toString();
+						if (rulesName === `posts`) {
+							rule.where[Op.or][0].title[Op.regexp] =
+								req.body.filter[param].soft.toString();
+							rule.where[Op.or][1].content[Op.regexp] =
+								req.body.filter[param].soft.toString();
+						}
+						if (rulesName === `users`) {
+							rule.where.login[Op.regexp] =
+								req.body.filter[param].soft.toString();
+						}
 						console.log(rule.where);
 					}
 
@@ -61,6 +67,13 @@ function initRules() {
 			users: {
 				where: {
 					role: `user`,
+				},
+			},
+			search: {
+				where: {
+					login: {
+						[Op.regexp]: null,
+					},
 				},
 			},
 		},

@@ -14,8 +14,12 @@ class UsersController {
 	getAll = async (req, res, next) => {
 		let where;
 
-		if (req.filterSettings.admins) where = req.filterSettings.admins.where;
-		if (req.filterSettings.users) where = req.filterSettings.users.where;
+		if (req.filterSettings.admins)
+			where = { ...req.filterSettings.admins.where, ...where };
+		if (req.filterSettings.users)
+			where = { ...req.filterSettings.users.where, ...where };
+		if (req.filterSettings.search)
+			where = { ...req.filterSettings.search.where, ...where };
 
 		sequelize
 			.inTransaction(async (transaction) => {
