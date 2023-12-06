@@ -40,6 +40,7 @@ import {
 import PostsController from "../../controllers/PostsController.js";
 
 import optional from "../../middlewares/getOptionalMiddleware.js";
+import tokenToBody from "../../middlewares/tokenToBody.js";
 
 const router = express.Router();
 
@@ -128,6 +129,7 @@ router.get(
 	paginationValidator,
 	querySortValidator,
 	queryFilterValidator,
+	tokenToBody,
 	validationErrorHandler,
 	getPaginationParams,
 	optional(getDataFromToken),
@@ -139,6 +141,7 @@ router.get(
 router.get(
 	`/:id`,
 	paramIdValidator,
+	tokenToBody,
 	validationErrorHandler,
 	optional(getDataFromToken),
 	optional(getUserByToken),
@@ -150,6 +153,7 @@ router.get(
 	paramIdValidator,
 	paginationValidator,
 	querySortValidator,
+	tokenToBody,
 	validationErrorHandler,
 	getPaginationParams,
 	optional(getDataFromToken),

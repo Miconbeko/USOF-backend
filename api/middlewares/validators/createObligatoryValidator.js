@@ -3,7 +3,6 @@ import { body } from "express-validator";
 export default (field, fieldName, method = body) => {
 	const toBody = async (value, { req }) => {
 		req.body[field] = value;
-		console.log(req.body);
 	};
 
 	if (!fieldName)
