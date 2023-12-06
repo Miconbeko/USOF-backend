@@ -24,7 +24,6 @@ class AuthController {
 						email: req.body.email,
 						fullName: req.body.fullName,
 						avatar: req.filePath,
-						role: `admin`, //TODO: Change this!!!! only for testing
 					},
 					{ transaction },
 				);
